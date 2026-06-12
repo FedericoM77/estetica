@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import type { Servicio } from '../types'
 
 export function useServices() {
@@ -11,24 +11,18 @@ export function useServices() {
     let cancelled = false
 
     async function fetchServices() {
-      setIsLoadingServices(true)
-      setErrorServices(null)
-
-      const { data, error } = await supabase
-        .from('servicios')
-        .select('*')
-        .eq('activo', true)
-        .order('nombre')
-
-      if (cancelled) return
-
-      if (error) {
-        setErrorServices('No se pudieron cargar los servicios. Intentá de nuevo.')
+      try {
+        const data = await api.getServicios()
+        if (cancelled) return
+        setServices(data)
+        setErrorServices(null)
+      } catch (error) {
+        if (cancelled) return
         console.error('[useServices]', error)
-      } else {
-        setServices((data ?? []) as Servicio[])
+        setErrorServices('No se pudieron cargar los servicios. Intentá de nuevo.')
+      } finally {
+        if (!cancelled) setIsLoadingServices(false)
       }
-      setIsLoadingServices(false)
     }
 
     void fetchServices()

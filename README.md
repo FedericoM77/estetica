@@ -2,6 +2,14 @@
 
 Sistema de reserva de turnos para centro de estética. React + Vite + TypeScript + Tailwind v4 + Supabase. Sin pago en el MVP: el turno se confirma directo.
 
+## Modo demo (sin Supabase)
+
+Si faltan las credenciales de Supabase (o con `VITE_USE_MOCKS=true`), la app corre en **modo demo**: catálogo mockeado y turnos persistidos en localStorage del navegador. Se indica con un badge "Demo" en el header.
+
+**Limitación clave:** cada visitante ve su propia "base" local — no hay agenda compartida ni reservas reales. Sirve para preview/demo del producto, no para operar. El deploy a GitHub Pages usa este modo si no se configuran los secrets `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`; al agregarlos, el próximo deploy vuelve a datos reales.
+
+La selección de implementación vive en `src/lib/api/` (contrato `DataApi`, implementaciones `supabaseApi` y `mockApi`).
+
 ## Setup
 
 1. **Supabase**: crear un proyecto en [supabase.com](https://supabase.com) y ejecutar `supabase/schema.sql` completo en el SQL Editor (incluye DDL, policies RLS y seed de desarrollo).

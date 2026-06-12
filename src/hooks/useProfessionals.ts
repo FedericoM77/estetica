@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import type { Profesional } from '../types'
 
 /**
@@ -15,27 +15,18 @@ export function useProfessionals(servicioId: string | null) {
     let cancelled = false
 
     async function fetchProfessionals() {
-      setIsLoadingProfessionals(true)
-      setErrorProfessionals(null)
-
-      let query = supabase.from('profesionales').select(
-        servicioId ? '*, profesional_servicios!inner(servicio_id)' : '*',
-      )
-      query = query.eq('activo', true)
-      if (servicioId) {
-        query = query.eq('profesional_servicios.servicio_id', servicioId)
-      }
-      const { data, error } = await query.order('nombre')
-
-      if (cancelled) return
-
-      if (error) {
-        setErrorProfessionals('No se pudieron cargar los profesionales. Intentá de nuevo.')
+      try {
+        const data = await api.getProfesionales(servicioId)
+        if (cancelled) return
+        setProfessionals(data)
+        setErrorProfessionals(null)
+      } catch (error) {
+        if (cancelled) return
         console.error('[useProfessionals]', error)
-      } else {
-        setProfessionals((data ?? []) as unknown as Profesional[])
+        setErrorProfessionals('No se pudieron cargar los profesionales. Intentá de nuevo.')
+      } finally {
+        if (!cancelled) setIsLoadingProfessionals(false)
       }
-      setIsLoadingProfessionals(false)
     }
 
     void fetchProfessionals()

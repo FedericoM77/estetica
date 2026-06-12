@@ -1,15 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { api, type FiltrosTurnos } from '../lib/api'
 import type { EstadoTurno, TurnoDetalle } from '../types'
-
-interface FiltrosTurnos {
-  /** Inicio del rango (inclusive), ISO string */
-  desde: string
-  /** Fin del rango (exclusive), ISO string */
-  hasta: string
-  profesionalId: string | null
-  estado: EstadoTurno | null
-}
 
 /** Turnos con relaciones embebidas para la agenda del admin. */
 export function useTurnos(filtros: FiltrosTurnos) {
@@ -25,28 +16,18 @@ export function useTurnos(filtros: FiltrosTurnos) {
     let cancelled = false
 
     async function fetchTurnos() {
-      let query = supabase
-        .from('turnos')
-        .select('*, cliente:clientes(*), profesional:profesionales(*), servicio:servicios(*)')
-        .gte('fecha_hora', desde)
-        .lt('fecha_hora', hasta)
-        .order('fecha_hora')
-
-      if (profesionalId) query = query.eq('profesional_id', profesionalId)
-      if (estado) query = query.eq('estado', estado)
-
-      const { data, error } = await query
-
-      if (cancelled) return
-
-      if (error) {
-        setErrorTurnos('No se pudieron cargar los turnos. Intentá de nuevo.')
-        console.error('[useTurnos]', error)
-      } else {
+      try {
+        const data = await api.getTurnosDetalle({ desde, hasta, profesionalId, estado })
+        if (cancelled) return
+        setTurnos(data)
         setErrorTurnos(null)
-        setTurnos((data ?? []) as unknown as TurnoDetalle[])
+      } catch (error) {
+        if (cancelled) return
+        console.error('[useTurnos]', error)
+        setErrorTurnos('No se pudieron cargar los turnos. Intentá de nuevo.')
+      } finally {
+        if (!cancelled) setIsLoadingTurnos(false)
       }
-      setIsLoadingTurnos(false)
     }
 
     void fetchTurnos()
@@ -61,18 +42,15 @@ export function useTurnos(filtros: FiltrosTurnos) {
   }, [])
 
   async function updateEstado(turnoId: string, nuevoEstado: EstadoTurno): Promise<boolean> {
-    const { error } = await supabase
-      .from('turnos')
-      .update({ estado: nuevoEstado })
-      .eq('id', turnoId)
-
-    if (error) {
+    try {
+      await api.updateEstadoTurno(turnoId, nuevoEstado)
+      refetchTurnos()
+      return true
+    } catch (error) {
       console.error('[useTurnos.updateEstado]', error)
       setErrorTurnos('No se pudo actualizar el estado del turno.')
       return false
     }
-    refetchTurnos()
-    return true
   }
 
   return { turnos, isLoadingTurnos, errorTurnos, refetchTurnos, updateEstado }

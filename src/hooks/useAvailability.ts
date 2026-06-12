@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react'
-import { addMinutes, format, isBefore, set, startOfDay, endOfDay } from 'date-fns'
-import { supabase } from '../lib/supabase'
+import { addMinutes, endOfDay, format, isBefore, set, startOfDay } from 'date-fns'
+import { api } from '../lib/api'
 import type { Slot } from '../types'
 
 const HORA_APERTURA = 9
 const HORA_CIERRE = 19
-
-interface TurnoOcupado {
-  fecha_hora: string
-  servicios: { duracion_minutos: number } | null
-}
 
 /**
  * Slots disponibles para un profesional en un día, en bloques de la
@@ -36,53 +31,54 @@ export function useAvailability(
     async function fetchAvailability() {
       setIsLoadingAvailability(true)
       setErrorAvailability(null)
-
       const dia = fecha as Date
-      const { data, error } = await supabase
-        .from('turnos')
-        .select('fecha_hora, servicios(duracion_minutos)')
-        .eq('profesional_id', profesionalId as string)
-        .neq('estado', 'CANCELADO')
-        .gte('fecha_hora', startOfDay(dia).toISOString())
-        .lte('fecha_hora', endOfDay(dia).toISOString())
 
-      if (cancelled) return
-
-      if (error) {
-        setErrorAvailability('No se pudo consultar la disponibilidad. Intentá de nuevo.')
-        console.error('[useAvailability]', error)
-        setIsLoadingAvailability(false)
-        return
-      }
-
-      const ocupados = ((data ?? []) as unknown as TurnoOcupado[]).map((t) => {
-        const inicio = new Date(t.fecha_hora)
-        const duracion = t.servicios?.duracion_minutos ?? 60
-        return { inicio, fin: addMinutes(inicio, duracion) }
-      })
-
-      const ahora = new Date()
-      const apertura = set(dia, { hours: HORA_APERTURA, minutes: 0, seconds: 0, milliseconds: 0 })
-      const cierre = set(dia, { hours: HORA_CIERRE, minutes: 0, seconds: 0, milliseconds: 0 })
-
-      const generados: Slot[] = []
-      let inicioSlot = apertura
-      while (!isBefore(cierre, addMinutes(inicioSlot, duracionMinutos as number))) {
-        const finSlot = addMinutes(inicioSlot, duracionMinutos as number)
-        const solapado = ocupados.some(
-          (o) => isBefore(inicioSlot, o.fin) && isBefore(o.inicio, finSlot),
+      try {
+        const ocupadosRaw = await api.getTurnosOcupados(
+          profesionalId as string,
+          startOfDay(dia).toISOString(),
+          endOfDay(dia).toISOString(),
         )
-        const pasado = isBefore(inicioSlot, ahora)
-        generados.push({
-          fechaHora: inicioSlot.toISOString(),
-          label: format(inicioSlot, 'HH:mm'),
-          disponible: !solapado && !pasado,
-        })
-        inicioSlot = finSlot
-      }
+        if (cancelled) return
 
-      setSlots(generados)
-      setIsLoadingAvailability(false)
+        const ocupados = ocupadosRaw.map((t) => {
+          const inicio = new Date(t.fechaHora)
+          return { inicio, fin: addMinutes(inicio, t.duracionMinutos) }
+        })
+
+        const ahora = new Date()
+        const apertura = set(dia, {
+          hours: HORA_APERTURA,
+          minutes: 0,
+          seconds: 0,
+          milliseconds: 0,
+        })
+        const cierre = set(dia, { hours: HORA_CIERRE, minutes: 0, seconds: 0, milliseconds: 0 })
+
+        const generados: Slot[] = []
+        let inicioSlot = apertura
+        while (!isBefore(cierre, addMinutes(inicioSlot, duracionMinutos as number))) {
+          const finSlot = addMinutes(inicioSlot, duracionMinutos as number)
+          const solapado = ocupados.some(
+            (o) => isBefore(inicioSlot, o.fin) && isBefore(o.inicio, finSlot),
+          )
+          const pasado = isBefore(inicioSlot, ahora)
+          generados.push({
+            fechaHora: inicioSlot.toISOString(),
+            label: format(inicioSlot, 'HH:mm'),
+            disponible: !solapado && !pasado,
+          })
+          inicioSlot = finSlot
+        }
+
+        setSlots(generados)
+      } catch (error) {
+        if (cancelled) return
+        console.error('[useAvailability]', error)
+        setErrorAvailability('No se pudo consultar la disponibilidad. Intentá de nuevo.')
+      } finally {
+        if (!cancelled) setIsLoadingAvailability(false)
+      }
     }
 
     void fetchAvailability()
