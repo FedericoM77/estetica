@@ -12,6 +12,10 @@ export interface Servicio {
   nombre: string
   descripcion: string | null
   duracion_minutos: number
+  /** Precio en ARS. Null = a consultar. */
+  precio: number | null
+  /** True cuando el precio es un piso ("desde $X", varía según largo/zona). */
+  precio_desde: boolean
   activo: boolean
   creado_at: string
 }
@@ -81,6 +85,8 @@ export interface ServicioInput {
   nombre: string
   descripcion: string | null
   duracion_minutos: number
+  precio: number | null
+  precio_desde: boolean
   activo: boolean
 }
 

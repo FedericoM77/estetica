@@ -2,6 +2,7 @@ import { useServices } from '../../hooks/useServices'
 import { Card } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
+import { formatPrecio } from '../../lib/format'
 import type { Servicio } from '../../types'
 
 interface StepServiceProps {
@@ -36,9 +37,12 @@ export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServ
             {servicio.descripcion && (
               <p className="mt-2 text-sm leading-relaxed text-muted">{servicio.descripcion}</p>
             )}
-            <p className="mt-3 text-xs uppercase tracking-wider text-gold">
-              {servicio.duracion_minutos} min
-            </p>
+            <div className="mt-3 flex items-baseline justify-between">
+              <span className="font-display text-lg text-gold">{formatPrecio(servicio)}</span>
+              <span className="text-xs uppercase tracking-wider text-muted">
+                {servicio.duracion_minutos} min
+              </span>
+            </div>
           </Card>
         ))}
       </div>

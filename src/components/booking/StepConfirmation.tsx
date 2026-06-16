@@ -6,6 +6,7 @@ import { enviarConfirmacionTurno } from '../../lib/whatsapp'
 import { Button } from '../ui/Button'
 import { Card } from '../ui/Card'
 import { Input } from '../ui/Input'
+import { formatPrecio } from '../../lib/format'
 import type { DatosCliente, Profesional, Servicio, Slot } from '../../types'
 
 interface StepConfirmationProps {
@@ -110,6 +111,10 @@ export function StepConfirmation({
             <div>
               <dt className="text-muted">Duración</dt>
               <dd className="text-ink">{servicio.duracion_minutos} minutos</dd>
+            </div>
+            <div>
+              <dt className="text-muted">Precio</dt>
+              <dd className="font-display text-lg text-gold">{formatPrecio(servicio)}</dd>
             </div>
           </dl>
         </Card>

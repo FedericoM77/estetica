@@ -167,6 +167,8 @@ export const mockApi: DataApi = {
       nombre: input.nombre.trim(),
       descripcion: input.descripcion?.trim() || null,
       duracion_minutos: input.duracion_minutos,
+      precio: input.precio,
+      precio_desde: input.precio_desde,
       activo: input.activo,
       creado_at: new Date().toISOString(),
     }
@@ -183,6 +185,8 @@ export const mockApi: DataApi = {
     servicio.nombre = input.nombre.trim()
     servicio.descripcion = input.descripcion?.trim() || null
     servicio.duracion_minutos = input.duracion_minutos
+    servicio.precio = input.precio
+    servicio.precio_desde = input.precio_desde
     servicio.activo = input.activo
     guardarDb(db)
     return servicio

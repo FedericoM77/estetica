@@ -191,6 +191,8 @@ export const supabaseApi: DataApi = {
         nombre: input.nombre.trim(),
         descripcion: input.descripcion?.trim() || null,
         duracion_minutos: input.duracion_minutos,
+        precio: input.precio,
+        precio_desde: input.precio_desde,
         activo: input.activo,
       })
       .select()
@@ -206,6 +208,8 @@ export const supabaseApi: DataApi = {
         nombre: input.nombre.trim(),
         descripcion: input.descripcion?.trim() || null,
         duracion_minutos: input.duracion_minutos,
+        precio: input.precio,
+        precio_desde: input.precio_desde,
         activo: input.activo,
       })
       .eq('id', id)

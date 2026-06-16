@@ -4,12 +4,15 @@ import { Card } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { Spinner } from '../../components/ui/Spinner'
 import { useAdminServicios } from '../../hooks/useAdminServicios'
+import { formatPrecio } from '../../lib/format'
 import type { Servicio, ServicioInput } from '../../types'
 
 const VACIO: ServicioInput = {
   nombre: '',
   descripcion: '',
   duracion_minutos: 60,
+  precio: null,
+  precio_desde: false,
   activo: true,
 }
 
@@ -34,6 +37,8 @@ export function TratamientosPage() {
       nombre: s.nombre,
       descripcion: s.descripcion ?? '',
       duracion_minutos: s.duracion_minutos,
+      precio: s.precio,
+      precio_desde: s.precio_desde,
       activo: s.activo,
     })
     setErrorForm(null)
@@ -104,29 +109,54 @@ export function TratamientosPage() {
                 onChange={(e) => setForm((f) => f && { ...f, descripcion: e.target.value })}
               />
             </label>
-            <div className="flex items-end gap-4">
+            <div className="flex flex-wrap items-end gap-4">
               <Input
                 label="Duración (min)"
                 type="number"
                 min={5}
                 max={480}
                 step={5}
-                className="w-40"
+                className="w-32"
                 value={form.duracion_minutos}
                 onChange={(e) =>
                   setForm((f) => f && { ...f, duracion_minutos: Number(e.target.value) })
                 }
               />
+              <Input
+                label="Precio (ARS)"
+                type="number"
+                min={0}
+                step={500}
+                className="w-40"
+                placeholder="A consultar"
+                value={form.precio ?? ''}
+                onChange={(e) =>
+                  setForm(
+                    (f) =>
+                      f && { ...f, precio: e.target.value === '' ? null : Number(e.target.value) },
+                  )
+                }
+              />
               <label className="flex items-center gap-2 pb-2.5 text-sm text-ink">
                 <input
                   type="checkbox"
-                  checked={form.activo}
-                  onChange={(e) => setForm((f) => f && { ...f, activo: e.target.checked })}
+                  checked={form.precio_desde}
+                  onChange={(e) => setForm((f) => f && { ...f, precio_desde: e.target.checked })}
                   className="h-4 w-4 accent-gold"
                 />
-                Activo (visible para reservar)
+                "Desde" (varía según largo)
               </label>
             </div>
+
+            <label className="flex items-center gap-2 text-sm text-ink">
+              <input
+                type="checkbox"
+                checked={form.activo}
+                onChange={(e) => setForm((f) => f && { ...f, activo: e.target.checked })}
+                className="h-4 w-4 accent-gold"
+              />
+              Activo (visible para reservar)
+            </label>
 
             {errorForm && <p className="text-sm text-error">{errorForm}</p>}
 
@@ -162,7 +192,8 @@ export function TratamientosPage() {
                   )}
                 </p>
                 <p className="mt-0.5 text-xs text-muted">
-                  {s.duracion_minutos} min{s.descripcion ? ` · ${s.descripcion}` : ''}
+                  <span className="text-gold">{formatPrecio(s)}</span> · {s.duracion_minutos} min
+                  {s.descripcion ? ` · ${s.descripcion}` : ''}
                 </p>
               </div>
               <div className="flex items-center gap-2">
