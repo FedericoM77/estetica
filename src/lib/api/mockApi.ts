@@ -1,9 +1,20 @@
-// Implementación demo de la capa de datos: catálogo estático y
-// clientes/turnos persistidos en localStorage del navegador.
-// CADA VISITANTE VE SU PROPIA "BASE" — solo sirve para demo/preview.
+// Implementación demo de la capa de datos sobre mockDb (localStorage).
+// CADA VISITANTE VE SU PROPIA BASE — solo sirve para demo/preview.
 
-import { addDays, set } from 'date-fns'
-import type { Cliente, EstadoTurno, Profesional, Servicio, Turno, TurnoDetalle } from '../../types'
+import { startOfDay, endOfDay, startOfWeek, endOfWeek } from 'date-fns'
+import type {
+  Cliente,
+  EstadoTurno,
+  Metricas,
+  Profesional,
+  ProfesionalConServicios,
+  ProfesionalInput,
+  Servicio,
+  ServicioInput,
+  Sucursal,
+  Turno,
+  TurnoDetalle,
+} from '../../types'
 import {
   SlotOcupadoError,
   type CrearTurnoInput,
@@ -12,199 +23,33 @@ import {
   type FiltrosTurnos,
   type TurnoOcupado,
 } from './types'
+import { delay, guardarDb, leerDb, nuevoId, type MockDb } from './mockDb'
 
-const STORAGE_KEY = 'aurum-demo-db-v1'
-const LATENCIA_MS = 300
-
-const ahora = new Date().toISOString()
-
-// ── Catálogo (espejo del seed de supabase/schema.sql) ──────────
-
-const SUCURSAL_ID = 'a0000000-0000-0000-0000-000000000001'
-
-const servicios: Servicio[] = [
-  {
-    id: 'b0000000-0000-0000-0000-000000000001',
-    nombre: 'Limpieza facial profunda',
-    descripcion:
-      'Higiene facial completa con extracción, exfoliación y máscara según tipo de piel.',
-    duracion_minutos: 60,
-    activo: true,
-    creado_at: ahora,
-  },
-  {
-    id: 'b0000000-0000-0000-0000-000000000002',
-    nombre: 'Botox',
-    descripcion:
-      'Aplicación de toxina botulínica para suavizar líneas de expresión. Incluye evaluación previa.',
-    duracion_minutos: 30,
-    activo: true,
-    creado_at: ahora,
-  },
-  {
-    id: 'b0000000-0000-0000-0000-000000000003',
-    nombre: 'Depilación láser',
-    descripcion: 'Depilación definitiva con láser de diodo. Sesión por zona.',
-    duracion_minutos: 45,
-    activo: true,
-    creado_at: ahora,
-  },
-]
-
-const profesionales: Profesional[] = [
-  {
-    id: 'c0000000-0000-0000-0000-000000000001',
-    sucursal_id: SUCURSAL_ID,
-    nombre: 'Dra. Valentina Soler',
-    especialidad: 'Medicina Estética',
-    activo: true,
-    creado_at: ahora,
-  },
-  {
-    id: 'c0000000-0000-0000-0000-000000000002',
-    sucursal_id: SUCURSAL_ID,
-    nombre: 'Lic. Camila Funes',
-    especialidad: 'Cosmetología',
-    activo: true,
-    creado_at: ahora,
-  },
-  {
-    id: 'c0000000-0000-0000-0000-000000000003',
-    sucursal_id: SUCURSAL_ID,
-    nombre: 'Téc. Julieta Ramos',
-    especialidad: 'Depilación Láser',
-    activo: true,
-    creado_at: ahora,
-  },
-]
-
-const profesionalServicios: Record<string, string[]> = {
-  'c0000000-0000-0000-0000-000000000001': [
-    'b0000000-0000-0000-0000-000000000002',
-    'b0000000-0000-0000-0000-000000000001',
-  ],
-  'c0000000-0000-0000-0000-000000000002': ['b0000000-0000-0000-0000-000000000001'],
-  'c0000000-0000-0000-0000-000000000003': ['b0000000-0000-0000-0000-000000000003'],
+function duracionDeServicio(db: MockDb, servicioId: string): number {
+  return db.servicios.find((s) => s.id === servicioId)?.duracion_minutos ?? 60
 }
 
-// ── Estado mutable (clientes + turnos) en localStorage ─────────
-
-interface MockDb {
-  clientes: Cliente[]
-  turnos: Turno[]
-}
-
-function aLas(dia: Date, hora: number): string {
-  return set(dia, { hours: hora, minutes: 0, seconds: 0, milliseconds: 0 }).toISOString()
-}
-
-function seedInicial(): MockDb {
-  const hoy = new Date()
-  const clientes: Cliente[] = [
-    {
-      id: 'd0000000-0000-0000-0000-000000000001',
-      nombre: 'María González',
-      telefono: '+5491155551111',
-      email: 'maria.gonzalez@example.com',
-      creado_at: ahora,
-    },
-    {
-      id: 'd0000000-0000-0000-0000-000000000002',
-      nombre: 'Lucía Pereyra',
-      telefono: '+5491155552222',
-      email: 'lucia.pereyra@example.com',
-      creado_at: ahora,
-    },
-  ]
-  const turnos: Turno[] = [
-    {
-      id: 'e0000000-0000-0000-0000-000000000001',
-      cliente_id: clientes[0].id,
-      profesional_id: profesionales[0].id,
-      servicio_id: 'b0000000-0000-0000-0000-000000000002',
-      fecha_hora: aLas(addDays(hoy, 1), 10),
-      estado: 'CONFIRMADO',
-      notas: null,
-      creado_at: ahora,
-    },
-    {
-      id: 'e0000000-0000-0000-0000-000000000002',
-      cliente_id: clientes[1].id,
-      profesional_id: profesionales[1].id,
-      servicio_id: 'b0000000-0000-0000-0000-000000000001',
-      fecha_hora: aLas(addDays(hoy, 1), 15),
-      estado: 'CONFIRMADO',
-      notas: null,
-      creado_at: ahora,
-    },
-    {
-      id: 'e0000000-0000-0000-0000-000000000003',
-      cliente_id: clientes[0].id,
-      profesional_id: profesionales[2].id,
-      servicio_id: 'b0000000-0000-0000-0000-000000000003',
-      fecha_hora: aLas(addDays(hoy, 2), 11),
-      estado: 'CONFIRMADO',
-      notas: null,
-      creado_at: ahora,
-    },
-    {
-      id: 'e0000000-0000-0000-0000-000000000004',
-      cliente_id: clientes[1].id,
-      profesional_id: profesionales[0].id,
-      servicio_id: 'b0000000-0000-0000-0000-000000000002',
-      fecha_hora: aLas(addDays(hoy, -1), 12),
-      estado: 'COMPLETADO',
-      notas: null,
-      creado_at: ahora,
-    },
-  ]
-  return { clientes, turnos }
-}
-
-function leerDb(): MockDb {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw) as MockDb
-  } catch {
-    // storage corrupto o inaccesible: re-seedear
-  }
-  const db = seedInicial()
-  guardarDb(db)
-  return db
-}
-
-function guardarDb(db: MockDb): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(db))
-  } catch {
-    // sin storage (modo incógnito estricto): la demo sigue en memoria
+function detallar(db: MockDb, t: Turno): TurnoDetalle {
+  return {
+    ...t,
+    cliente: db.clientes.find((c) => c.id === t.cliente_id) as Cliente,
+    profesional: db.profesionales.find((p) => p.id === t.profesional_id) as Profesional,
+    servicio: db.servicios.find((s) => s.id === t.servicio_id) as Servicio,
   }
 }
-
-function delay(): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, LATENCIA_MS))
-}
-
-function nuevoId(): string {
-  return crypto.randomUUID()
-}
-
-function duracionDeServicio(servicioId: string): number {
-  return servicios.find((s) => s.id === servicioId)?.duracion_minutos ?? 60
-}
-
-// ── API ────────────────────────────────────────────────────────
 
 export const mockApi: DataApi = {
   async getServicios(): Promise<Servicio[]> {
     await delay()
-    return servicios
+    return leerDb().servicios.filter((s) => s.activo)
   },
 
   async getProfesionales(servicioId: string | null): Promise<Profesional[]> {
     await delay()
-    if (!servicioId) return profesionales
-    return profesionales.filter((p) => profesionalServicios[p.id]?.includes(servicioId))
+    const db = leerDb()
+    const activos = db.profesionales.filter((p) => p.activo)
+    if (!servicioId) return activos
+    return activos.filter((p) => db.profesionalServicios[p.id]?.includes(servicioId))
   },
 
   async getTurnosOcupados(
@@ -224,7 +69,7 @@ export const mockApi: DataApi = {
       )
       .map((t) => ({
         fechaHora: t.fecha_hora,
-        duracionMinutos: duracionDeServicio(t.servicio_id),
+        duracionMinutos: duracionDeServicio(db, t.servicio_id),
       }))
   },
 
@@ -281,12 +126,7 @@ export const mockApi: DataApi = {
           (!filtros.estado || t.estado === filtros.estado),
       )
       .sort((a, b) => a.fecha_hora.localeCompare(b.fecha_hora))
-      .map((t) => ({
-        ...t,
-        cliente: db.clientes.find((c) => c.id === t.cliente_id) as Cliente,
-        profesional: profesionales.find((p) => p.id === t.profesional_id) as Profesional,
-        servicio: servicios.find((s) => s.id === t.servicio_id) as Servicio,
-      }))
+      .map((t) => detallar(db, t))
   },
 
   async updateEstadoTurno(turnoId: string, estado: EstadoTurno): Promise<void> {
@@ -296,5 +136,160 @@ export const mockApi: DataApi = {
     if (!turno) throw new Error('Turno no encontrado')
     turno.estado = estado
     guardarDb(db)
+  },
+
+  async getTurnosDeCliente(clienteId: string): Promise<TurnoDetalle[]> {
+    await delay()
+    const db = leerDb()
+    return db.turnos
+      .filter((t) => t.cliente_id === clienteId)
+      .sort((a, b) => b.fecha_hora.localeCompare(a.fecha_hora))
+      .map((t) => detallar(db, t))
+  },
+
+  // ── ABM ────────────────────────────────────────────────────
+
+  async getSucursales(): Promise<Sucursal[]> {
+    await delay()
+    return leerDb().sucursales
+  },
+
+  async getServiciosAdmin(): Promise<Servicio[]> {
+    await delay()
+    return [...leerDb().servicios].sort((a, b) => a.nombre.localeCompare(b.nombre))
+  },
+
+  async crearServicio(input: ServicioInput): Promise<Servicio> {
+    await delay()
+    const db = leerDb()
+    const servicio: Servicio = {
+      id: nuevoId(),
+      nombre: input.nombre.trim(),
+      descripcion: input.descripcion?.trim() || null,
+      duracion_minutos: input.duracion_minutos,
+      activo: input.activo,
+      creado_at: new Date().toISOString(),
+    }
+    db.servicios.push(servicio)
+    guardarDb(db)
+    return servicio
+  },
+
+  async actualizarServicio(id: string, input: ServicioInput): Promise<Servicio> {
+    await delay()
+    const db = leerDb()
+    const servicio = db.servicios.find((s) => s.id === id)
+    if (!servicio) throw new Error('Tratamiento no encontrado')
+    servicio.nombre = input.nombre.trim()
+    servicio.descripcion = input.descripcion?.trim() || null
+    servicio.duracion_minutos = input.duracion_minutos
+    servicio.activo = input.activo
+    guardarDb(db)
+    return servicio
+  },
+
+  async eliminarServicio(id: string): Promise<void> {
+    await delay()
+    const db = leerDb()
+    if (db.turnos.some((t) => t.servicio_id === id)) {
+      throw new Error('No se puede eliminar: el tratamiento tiene turnos. Desactivalo en su lugar.')
+    }
+    db.servicios = db.servicios.filter((s) => s.id !== id)
+    for (const profId of Object.keys(db.profesionalServicios)) {
+      db.profesionalServicios[profId] = db.profesionalServicios[profId].filter((sid) => sid !== id)
+    }
+    guardarDb(db)
+  },
+
+  async getProfesionalesAdmin(): Promise<ProfesionalConServicios[]> {
+    await delay()
+    const db = leerDb()
+    return [...db.profesionales]
+      .sort((a, b) => a.nombre.localeCompare(b.nombre))
+      .map((p) => ({ ...p, servicioIds: db.profesionalServicios[p.id] ?? [] }))
+  },
+
+  async crearProfesional(input: ProfesionalInput): Promise<Profesional> {
+    await delay()
+    const db = leerDb()
+    const profesional: Profesional = {
+      id: nuevoId(),
+      sucursal_id: input.sucursal_id,
+      nombre: input.nombre.trim(),
+      especialidad: input.especialidad.trim(),
+      activo: input.activo,
+      creado_at: new Date().toISOString(),
+    }
+    db.profesionales.push(profesional)
+    db.profesionalServicios[profesional.id] = [...input.servicioIds]
+    guardarDb(db)
+    return profesional
+  },
+
+  async actualizarProfesional(id: string, input: ProfesionalInput): Promise<Profesional> {
+    await delay()
+    const db = leerDb()
+    const profesional = db.profesionales.find((p) => p.id === id)
+    if (!profesional) throw new Error('Esteticista no encontrado')
+    profesional.sucursal_id = input.sucursal_id
+    profesional.nombre = input.nombre.trim()
+    profesional.especialidad = input.especialidad.trim()
+    profesional.activo = input.activo
+    db.profesionalServicios[id] = [...input.servicioIds]
+    guardarDb(db)
+    return profesional
+  },
+
+  async eliminarProfesional(id: string): Promise<void> {
+    await delay()
+    const db = leerDb()
+    if (db.turnos.some((t) => t.profesional_id === id)) {
+      throw new Error('No se puede eliminar: el esteticista tiene turnos. Desactivalo en su lugar.')
+    }
+    db.profesionales = db.profesionales.filter((p) => p.id !== id)
+    delete db.profesionalServicios[id]
+    guardarDb(db)
+  },
+
+  async getMetricas(): Promise<Metricas> {
+    await delay()
+    const db = leerDb()
+    const ahora = new Date()
+    const hoyDesde = startOfDay(ahora).toISOString()
+    const hoyHasta = endOfDay(ahora).toISOString()
+    const semDesde = startOfWeek(ahora, { weekStartsOn: 1 }).toISOString()
+    const semHasta = endOfWeek(ahora, { weekStartsOn: 1 }).toISOString()
+    const noCancelados = db.turnos.filter((t) => t.estado !== 'CANCELADO')
+
+    const conteoPorServicio = new Map<string, number>()
+    for (const t of noCancelados) {
+      conteoPorServicio.set(t.servicio_id, (conteoPorServicio.get(t.servicio_id) ?? 0) + 1)
+    }
+    const topServicios = [...conteoPorServicio.entries()]
+      .map(([servicioId, cantidad]) => ({
+        nombre: db.servicios.find((s) => s.id === servicioId)?.nombre ?? '—',
+        cantidad,
+      }))
+      .sort((a, b) => b.cantidad - a.cantidad)
+      .slice(0, 5)
+
+    const proximosTurnos = db.turnos
+      .filter((t) => t.estado === 'CONFIRMADO' && t.fecha_hora >= ahora.toISOString())
+      .sort((a, b) => a.fecha_hora.localeCompare(b.fecha_hora))
+      .slice(0, 5)
+      .map((t) => detallar(db, t))
+
+    return {
+      turnosHoy: db.turnos.filter((t) => t.fecha_hora >= hoyDesde && t.fecha_hora <= hoyHasta).length,
+      turnosSemana: db.turnos.filter((t) => t.fecha_hora >= semDesde && t.fecha_hora <= semHasta)
+        .length,
+      confirmados: db.turnos.filter((t) => t.estado === 'CONFIRMADO').length,
+      completados: db.turnos.filter((t) => t.estado === 'COMPLETADO').length,
+      cancelados: db.turnos.filter((t) => t.estado === 'CANCELADO').length,
+      esteticistasActivos: db.profesionales.filter((p) => p.activo).length,
+      tratamientosActivos: db.servicios.filter((s) => s.activo).length,
+      topServicios,
+      proximosTurnos,
+    }
   },
 }

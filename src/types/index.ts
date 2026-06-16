@@ -60,6 +60,61 @@ export interface DatosCliente {
   email: string
 }
 
+// ── Auth / Roles ──────────────────────────────────────────────
+
+export type Rol = 'ADMIN' | 'CLIENTE'
+
+/** Usuario autenticado, ya resuelto con su rol y (si paciente) su cliente_id. */
+export interface Usuario {
+  id: string
+  email: string
+  rol: Rol
+  nombre: string
+  /** Sólo pacientes: id de su fila en `clientes`. Null para admin. */
+  clienteId: string | null
+}
+
+// ── Inputs de ABM (panel admin) ───────────────────────────────
+
+/** Alta/edición de un tratamiento (servicio). */
+export interface ServicioInput {
+  nombre: string
+  descripcion: string | null
+  duracion_minutos: number
+  activo: boolean
+}
+
+/** Alta/edición de un esteticista (profesional) + sus tratamientos. */
+export interface ProfesionalInput {
+  sucursal_id: string
+  nombre: string
+  especialidad: string
+  activo: boolean
+  /** Ids de servicios que realiza. */
+  servicioIds: string[]
+}
+
+/** Profesional con los ids de servicios que tiene asignados. */
+export interface ProfesionalConServicios extends Profesional {
+  servicioIds: string[]
+}
+
+// ── Métricas del dashboard ────────────────────────────────────
+
+export interface Metricas {
+  turnosHoy: number
+  turnosSemana: number
+  confirmados: number
+  completados: number
+  cancelados: number
+  esteticistasActivos: number
+  tratamientosActivos: number
+  /** Ranking de servicios por cantidad de turnos (no cancelados). */
+  topServicios: { nombre: string; cantidad: number }[]
+  /** Próximos turnos confirmados, ordenados por fecha. */
+  proximosTurnos: TurnoDetalle[]
+}
+
 /** Slot de agenda generado para un día/profesional. */
 export interface Slot {
   /** ISO string del inicio del slot */

@@ -2,8 +2,13 @@ import type {
   Cliente,
   DatosCliente,
   EstadoTurno,
+  Metricas,
   Profesional,
+  ProfesionalConServicios,
+  ProfesionalInput,
   Servicio,
+  ServicioInput,
+  Sucursal,
   Turno,
   TurnoDetalle,
 } from '../../types'
@@ -62,4 +67,27 @@ export interface DataApi {
   crearTurno(input: CrearTurnoInput): Promise<CrearTurnoResult>
   getTurnosDetalle(filtros: FiltrosTurnos): Promise<TurnoDetalle[]>
   updateEstadoTurno(turnoId: string, estado: EstadoTurno): Promise<void>
+
+  // ── Turnos del paciente ─────────────────────────────────────
+  /** Turnos (con relaciones) de un cliente, ordenados por fecha desc. */
+  getTurnosDeCliente(clienteId: string): Promise<TurnoDetalle[]>
+
+  // ── ABM — catálogo administrado desde el panel ──────────────
+  getSucursales(): Promise<Sucursal[]>
+
+  /** Tratamientos incluyendo inactivos (vista admin). */
+  getServiciosAdmin(): Promise<Servicio[]>
+  crearServicio(input: ServicioInput): Promise<Servicio>
+  actualizarServicio(id: string, input: ServicioInput): Promise<Servicio>
+  /** Baja física; falla si tiene turnos asociados (usar `activo=false` para baja lógica). */
+  eliminarServicio(id: string): Promise<void>
+
+  /** Esteticistas incluyendo inactivos, con sus servicios asignados. */
+  getProfesionalesAdmin(): Promise<ProfesionalConServicios[]>
+  crearProfesional(input: ProfesionalInput): Promise<Profesional>
+  actualizarProfesional(id: string, input: ProfesionalInput): Promise<Profesional>
+  eliminarProfesional(id: string): Promise<void>
+
+  // ── Dashboard ───────────────────────────────────────────────
+  getMetricas(): Promise<Metricas>
 }

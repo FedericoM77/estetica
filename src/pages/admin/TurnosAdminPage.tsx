@@ -1,17 +1,16 @@
 import { useMemo, useState } from 'react'
 import { addDays, addWeeks, eachDayOfInterval, format, isSameDay, startOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { PageWrapper } from '../components/layout/PageWrapper'
-import { ManualTurnoForm } from '../components/admin/ManualTurnoForm'
-import { Badge } from '../components/ui/Badge'
-import { Button } from '../components/ui/Button'
-import { Select } from '../components/ui/Input'
-import { Spinner } from '../components/ui/Spinner'
-import { useProfessionals } from '../hooks/useProfessionals'
-import { useTurnos } from '../hooks/useTurnos'
-import type { EstadoTurno } from '../types'
+import { ManualTurnoForm } from '../../components/admin/ManualTurnoForm'
+import { Badge } from '../../components/ui/Badge'
+import { Button } from '../../components/ui/Button'
+import { Select } from '../../components/ui/Input'
+import { Spinner } from '../../components/ui/Spinner'
+import { useProfessionals } from '../../hooks/useProfessionals'
+import { useTurnos } from '../../hooks/useTurnos'
+import type { EstadoTurno } from '../../types'
 
-export function AdminPage() {
+export function TurnosAdminPage() {
   const [inicioSemana, setInicioSemana] = useState(() =>
     startOfWeek(new Date(), { weekStartsOn: 1 }),
   )
@@ -39,7 +38,7 @@ export function AdminPage() {
   })
 
   return (
-    <PageWrapper>
+    <div>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="font-display text-2xl font-light text-ink">Agenda semanal</h2>
         <Button variant="secondary" onClick={() => setMostrarFormManual((v) => !v)}>
@@ -53,7 +52,6 @@ export function AdminPage() {
         </div>
       )}
 
-      {/* Navegación de semana + filtros */}
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex items-center gap-3">
           <Button variant="secondary" onClick={() => setInicioSemana((s) => addWeeks(s, -1))}>
@@ -165,6 +163,6 @@ export function AdminPage() {
           })}
         </div>
       )}
-    </PageWrapper>
+    </div>
   )
 }

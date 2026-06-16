@@ -12,6 +12,8 @@ interface StepConfirmationProps {
   servicio: Servicio
   profesional: Profesional
   slot: Slot
+  /** Prefill con los datos del paciente autenticado. */
+  datosIniciales?: Partial<DatosCliente>
   onSuccess: (datos: DatosCliente) => void
   onBack: () => void
 }
@@ -40,10 +42,15 @@ export function StepConfirmation({
   servicio,
   profesional,
   slot,
+  datosIniciales,
   onSuccess,
   onBack,
 }: StepConfirmationProps) {
-  const [datos, setDatos] = useState<DatosCliente>({ nombre: '', telefono: '', email: '' })
+  const [datos, setDatos] = useState<DatosCliente>({
+    nombre: datosIniciales?.nombre ?? '',
+    telefono: datosIniciales?.telefono ?? '',
+    email: datosIniciales?.email ?? '',
+  })
   const [errores, setErrores] = useState<ErroresForm>({})
   const { createTurno, isCreatingTurno, errorCreateTurno } = useCreateTurno()
 

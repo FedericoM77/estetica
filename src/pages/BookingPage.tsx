@@ -6,11 +6,13 @@ import { StepProfessional } from '../components/booking/StepProfessional'
 import { StepDateTime } from '../components/booking/StepDateTime'
 import { StepConfirmation } from '../components/booking/StepConfirmation'
 import { SuccessScreen } from '../components/booking/SuccessScreen'
+import { useAuth } from '../hooks/useAuth'
 import type { DatosCliente, Profesional, Servicio, Slot } from '../types'
 
 type Paso = 1 | 2 | 3 | 4 | 'success'
 
 export function BookingPage() {
+  const { usuario } = useAuth()
   const [paso, setPaso] = useState<Paso>(1)
   const [servicio, setServicio] = useState<Servicio | null>(null)
   const [profesional, setProfesional] = useState<Profesional | null>(null)
@@ -99,6 +101,9 @@ export function BookingPage() {
           servicio={servicio}
           profesional={profesional}
           slot={slot}
+          datosIniciales={
+            usuario ? { nombre: usuario.nombre, email: usuario.email } : undefined
+          }
           onSuccess={(datos) => {
             setCliente(datos)
             setPaso('success')

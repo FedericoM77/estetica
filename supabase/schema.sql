@@ -69,30 +69,18 @@ CREATE INDEX idx_turnos_fecha ON turnos(fecha_hora);
 CREATE INDEX idx_turnos_estado ON turnos(estado);
 
 -- ============================================================
--- RLS
--- El MVP opera con la anon key desde el frontend (reserva guest
--- y admin sin auth), por lo que las policies son permisivas.
--- NOTA: endurecer antes de producción real (auth de admin,
--- restringir UPDATE/SELECT de clientes).
+-- RLS + Auth por rol (ADMIN / CLIENTE)
+-- El login es obligatorio: pacientes y admin se autentican con
+-- Supabase Auth. La autorización vive en las policies por rol.
+-- Toda la definición (tabla perfiles, trigger de alta, helpers
+-- es_admin()/cliente_actual(), policies y grants) está en:
+--   supabase/migrations/20260616000000_auth_roles.sql
+-- Ejecutar ESTE archivo y luego esa migración (en ese orden).
 -- ============================================================
 
 ALTER TABLE turnos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE clientes ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "clientes_select_anon" ON clientes FOR SELECT USING (true);
-CREATE POLICY "clientes_insert_anon" ON clientes FOR INSERT WITH CHECK (true);
-CREATE POLICY "clientes_update_anon" ON clientes FOR UPDATE USING (true);
-
-CREATE POLICY "turnos_select_anon" ON turnos FOR SELECT USING (true);
-CREATE POLICY "turnos_insert_anon" ON turnos FOR INSERT WITH CHECK (true);
-CREATE POLICY "turnos_update_anon" ON turnos FOR UPDATE USING (true);
-
--- Permisos mínimos para el frontend (anon key).
--- En Supabase cloud existen grants por defecto; en local hay que declararlos.
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
-GRANT SELECT ON sucursales, servicios, profesionales, profesional_servicios
-  TO anon, authenticated;
-GRANT SELECT, INSERT, UPDATE ON clientes, turnos TO anon, authenticated;
 
 -- ============================================================
 -- SEED de desarrollo

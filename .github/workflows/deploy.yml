@@ -33,6 +33,9 @@ jobs:
       - run: npm run build
         env:
           GITHUB_PAGES: 'true'
+          # Deploy en modo demo (mockApi/mockAuth) de forma explícita.
+          # Para volver a datos reales: poner en 'false' y configurar los secrets.
+          VITE_USE_MOCKS: 'true'
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
