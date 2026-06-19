@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './lib/auth/AuthContext'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
@@ -13,6 +14,13 @@ import { TratamientosPage } from './pages/admin/TratamientosPage'
 import { SucursalesPage } from './pages/admin/SucursalesPage'
 
 export default function App() {
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      'dark',
+      localStorage.getItem('aurum-theme') === 'dark',
+    )
+  }, [])
+
   return (
     <AuthProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL}>

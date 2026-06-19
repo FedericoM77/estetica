@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const navItems = ['Agenda', 'Clientes', 'Tratamientos', 'Caja/Ventas', 'Configuracion']
 
@@ -73,10 +73,15 @@ function KpiCard({ label, value, detail, tone }: (typeof kpis)[number]) {
 }
 
 export function DashboardPage() {
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('aurum-theme') === 'dark')
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark)
+    localStorage.setItem('aurum-theme', isDark ? 'dark' : 'light')
+  }, [isDark])
 
   return (
-    <section className={isDark ? 'dark' : ''}>
+    <section>
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-slate-900 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.55)] transition-colors dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100">
         <header className="flex flex-col gap-4 border-b border-slate-200 bg-white/80 px-5 py-4 backdrop-blur md:flex-row md:items-center md:justify-between dark:border-slate-800 dark:bg-slate-950/80">
           <div>
