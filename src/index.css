@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Paleta AURUM — ver CLAUDE.md */
   --color-base: #0f0f0f;
