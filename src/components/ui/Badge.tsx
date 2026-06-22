@@ -1,9 +1,12 @@
 import type { EstadoTurno } from '../../types'
 
 const estadoStyles: Record<EstadoTurno, string> = {
-  CONFIRMADO: 'border-gold/40 text-gold',
-  CANCELADO: 'border-error/40 text-error',
-  COMPLETADO: 'border-success/40 text-success',
+  CONFIRMADO:
+    'border-gold/40 text-gold dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400',
+  CANCELADO:
+    'border-error/40 text-error dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400',
+  COMPLETADO:
+    'border-success/40 text-success dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300',
 }
 
 export function Badge({ estado }: { estado: EstadoTurno }) {
