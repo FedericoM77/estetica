@@ -122,20 +122,23 @@ export function SucursalesPage() {
       {!isLoadingSucursales && !errorSucursales && (
         <div className="grid gap-4 sm:grid-cols-2">
           {sucursales.map((sucursal) => (
-            <Card key={sucursal.id}>
+            <Card
+              key={sucursal.id}
+              className="border-amber-200/20 bg-zinc-900 shadow-[0_18px_45px_-32px_rgba(0,0,0,0.7)] dark:border-purple-950/40 dark:bg-zinc-900"
+            >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-display text-lg text-slate-950 dark:text-white">
+                  <p className="font-display text-lg text-amber-100 dark:text-[#E6C687]">
                     {sucursal.nombre}
                   </p>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  <p className="mt-1 text-sm text-amber-200/75 dark:text-zinc-400">
                     {sucursal.direccion}
                   </p>
                 </div>
                 <div className="flex shrink-0 gap-2">
                   <Button
                     variant="secondary"
-                    className="px-3 py-1.5 text-xs"
+                    className="border-amber-100/70 px-3 py-1.5 text-xs text-amber-100 hover:border-amber-200 hover:bg-amber-200/10 dark:border-zinc-600 dark:text-zinc-200"
                     onClick={() => abrirEdicion(sucursal)}
                   >
                     Editar
