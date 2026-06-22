@@ -2,13 +2,39 @@ import { useServices } from '../../hooks/useServices'
 import { Card } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
-import { formatPrecio } from '../../lib/format'
 import type { Servicio } from '../../types'
 
 interface StepServiceProps {
   servicioSeleccionado: Servicio | null
   onSelect: (servicio: Servicio) => void
   onNext: () => void
+}
+
+const nfARS = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  maximumFractionDigits: 0,
+})
+
+function PrecioServicio({ servicio }: { servicio: Servicio }) {
+  if (servicio.precio == null) {
+    return (
+      <span className="font-sans text-sm font-medium text-amber-700/80 dark:text-[#E6C687]">
+        A consultar
+      </span>
+    )
+  }
+
+  return (
+    <span className="font-sans text-sm font-semibold text-amber-700/80 dark:text-[#E6C687]">
+      {servicio.precio_desde && (
+        <span className="mr-1 font-normal text-amber-700/70 dark:text-[#E6C687]/80">
+          desde
+        </span>
+      )}
+      {nfARS.format(servicio.precio)}
+    </span>
+  )
 }
 
 export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServiceProps) {
@@ -19,7 +45,7 @@ export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServ
 
   return (
     <div className="animate-step-in">
-      <h2 className="mb-3 text-center font-display text-3xl font-light text-zinc-800 dark:text-zinc-50">
+      <h2 className="mb-3 text-center font-display text-3xl font-medium tracking-wide text-zinc-800 dark:text-zinc-50">
         Elegí tu especialidad o tratamiento
       </h2>
       <p className="mx-auto mb-8 max-w-2xl text-center text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
@@ -36,8 +62,9 @@ export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServ
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onSelect(servicio)}
+            className="flex min-h-44 flex-col"
           >
-            <h3 className="font-display text-xl text-zinc-800 dark:text-zinc-50">
+            <h3 className="font-sans text-base font-semibold leading-6 text-zinc-800 dark:text-zinc-50">
               {servicio.nombre}
             </h3>
             {servicio.descripcion && (
@@ -45,11 +72,9 @@ export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServ
                 {servicio.descripcion}
               </p>
             )}
-            <div className="mt-3 flex items-baseline justify-between">
-              <span className="font-display text-lg text-amber-700/80 dark:text-[#E6C687]">
-                {formatPrecio(servicio)}
-              </span>
-              <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-500">
+            <div className="mt-auto flex items-baseline justify-between gap-4 pt-5">
+              <PrecioServicio servicio={servicio} />
+              <span className="font-sans text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                 {servicio.duracion_minutos} min
               </span>
             </div>

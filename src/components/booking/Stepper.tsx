@@ -2,7 +2,7 @@ const pasos = ['Servicio', 'Profesional', 'Fecha y hora', 'Confirmacion']
 
 export function Stepper({ pasoActual }: { pasoActual: number }) {
   return (
-    <ol className="mb-10 flex items-center justify-center gap-2 sm:gap-4">
+    <ol className="mb-10 flex items-center justify-center gap-2 font-sans sm:gap-4">
       {pasos.map((nombre, i) => {
         const numero = i + 1
         const activo = numero === pasoActual
