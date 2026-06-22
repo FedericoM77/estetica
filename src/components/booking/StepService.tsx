@@ -20,7 +20,7 @@ export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServ
   return (
     <div className="animate-step-in">
       <h2 className="mb-6 text-center font-display text-2xl font-light text-ink">
-        Elegí tu tratamiento
+        Elegí tu especialidad o tratamiento
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((servicio) => (

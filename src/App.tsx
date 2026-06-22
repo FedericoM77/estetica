@@ -4,8 +4,6 @@ import { AuthProvider } from './lib/auth/AuthContext'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
 import { AdminLayout } from './components/admin/AdminLayout'
 import { BookingPage } from './pages/BookingPage'
-import { MisTurnosPage } from './pages/MisTurnosPage'
-import { IngresarPage } from './pages/IngresarPage'
 import { AdminLoginPage } from './pages/AdminLoginPage'
 import { DashboardPage } from './pages/admin/DashboardPage'
 import { TurnosAdminPage } from './pages/admin/TurnosAdminPage'
@@ -27,15 +25,11 @@ export default function App() {
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <ThemeToggle />
         <Routes>
-          {/* Acceso público */}
-          <Route path="/ingresar" element={<IngresarPage />} />
+          {/* Acceso publico para clientes */}
+          <Route path="/" element={<BookingPage />} />
+          <Route path="/ingresar" element={<Navigate to="/" replace />} />
+          <Route path="/cliente/login" element={<Navigate to="/" replace />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
-
-          {/* Paciente autenticado */}
-          <Route element={<ProtectedRoute rol="CLIENTE" />}>
-            <Route path="/" element={<BookingPage />} />
-            <Route path="/mis-turnos" element={<MisTurnosPage />} />
-          </Route>
 
           {/* Admin autenticado */}
           <Route element={<ProtectedRoute rol="ADMIN" />}>
