@@ -20,13 +20,13 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900 transition-colors dark:bg-zinc-950 dark:text-zinc-100">
       <aside className="hidden w-60 shrink-0 flex-col border-r border-slate-200 bg-white px-4 py-6 transition-colors md:flex dark:border-purple-950/40 dark:bg-zinc-950">
         <div className="px-2">
-          <span className="font-display text-2xl font-light tracking-[0.3em] text-slate-950 dark:text-zinc-50">
+          <span className="font-display text-2xl font-medium uppercase leading-none tracking-widest text-zinc-800 dark:text-[#E6C687]">
             AURUM
           </span>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-slate-500 dark:text-zinc-500">
+          <p className="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500 dark:text-zinc-500">
             Administracion
           </p>
           {usingMocks && (
@@ -43,7 +43,7 @@ export function AdminLayout() {
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `rounded-btn px-3 py-2 text-sm transition-colors ${
+                `rounded-btn px-3 py-2 font-sans text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-sm shadow-violet-500/20 dark:border-l-2 dark:border-amber-300 dark:bg-zinc-900 dark:bg-none dark:text-[#E6C687] dark:shadow-none'
                     : 'text-slate-500 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-500 dark:hover:bg-zinc-900/70 dark:hover:text-zinc-100'
@@ -70,7 +70,7 @@ export function AdminLayout() {
 
       <div className="flex flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
-          <span className="font-display text-xl font-light tracking-[0.3em] text-slate-950 dark:text-zinc-50">
+          <span className="font-display text-xl font-medium uppercase tracking-widest text-zinc-800 dark:text-[#E6C687]">
             AURUM
           </span>
           <button
@@ -88,7 +88,7 @@ export function AdminLayout() {
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `whitespace-nowrap rounded-btn px-3 py-1.5 text-xs transition-colors ${
+                `whitespace-nowrap rounded-btn px-3 py-1.5 font-sans text-xs font-medium transition-colors ${
                   isActive
                     ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white dark:bg-zinc-900 dark:bg-none dark:text-[#E6C687]'
                     : 'text-slate-500 hover:text-violet-700 dark:text-zinc-500 dark:hover:text-zinc-100'
