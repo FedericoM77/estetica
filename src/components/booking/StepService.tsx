@@ -2,7 +2,8 @@ import { useServices } from '../../hooks/useServices'
 import { Card } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
-import type { Servicio } from '../../types'
+import { toServiceCardDTO } from '../../lib/format'
+import type { ServiceCardDTO, Servicio } from '../../types'
 
 interface StepServiceProps {
   servicioSeleccionado: Servicio | null
@@ -10,30 +11,48 @@ interface StepServiceProps {
   onNext: () => void
 }
 
-const nfARS = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-  maximumFractionDigits: 0,
-})
-
-function PrecioServicio({ servicio }: { servicio: Servicio }) {
-  if (servicio.precio == null) {
+function PriceLabel({ label }: { label: string }) {
+  if (label === 'A consultar') {
     return (
       <span className="font-sans text-sm font-medium text-amber-700/80 dark:text-[#E6C687]">
-        A consultar
+        {label}
       </span>
     )
   }
 
+  const isVariablePrice = label.startsWith('desde ')
+  const amount = isVariablePrice ? label.replace(/^desde\s+/, '') : label
+
   return (
     <span className="font-sans text-sm font-semibold text-amber-700/80 dark:text-[#E6C687]">
-      {servicio.precio_desde && (
+      {isVariablePrice && (
         <span className="mr-1 font-normal text-amber-700/70 dark:text-[#E6C687]/80">
           desde
         </span>
       )}
-      {nfARS.format(servicio.precio)}
+      {amount}
     </span>
+  )
+}
+
+function ServiceCardContent({ card }: { card: ServiceCardDTO }) {
+  return (
+    <>
+      <h3 className="font-sans text-base font-semibold leading-6 text-zinc-800 dark:text-zinc-50">
+        {card.title}
+      </h3>
+      {card.description && (
+        <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+          {card.description}
+        </p>
+      )}
+      <div className="mt-auto flex items-baseline justify-between gap-4 pt-5">
+        <PriceLabel label={card.priceLabel} />
+        <span className="font-sans text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          {card.durationLabel}
+        </span>
+      </div>
+    </>
   )
 }
 
@@ -53,33 +72,24 @@ export function StepService({ servicioSeleccionado, onSelect, onNext }: StepServ
         privada y sin crear una cuenta.
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {services.map((servicio) => (
-          <Card
-            key={servicio.id}
-            selectable
-            selected={servicioSeleccionado?.id === servicio.id}
-            onClick={() => onSelect(servicio)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && onSelect(servicio)}
-            className="flex min-h-44 flex-col"
-          >
-            <h3 className="font-sans text-base font-semibold leading-6 text-zinc-800 dark:text-zinc-50">
-              {servicio.nombre}
-            </h3>
-            {servicio.descripcion && (
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-                {servicio.descripcion}
-              </p>
-            )}
-            <div className="mt-auto flex items-baseline justify-between gap-4 pt-5">
-              <PrecioServicio servicio={servicio} />
-              <span className="font-sans text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                {servicio.duracion_minutos} min
-              </span>
-            </div>
-          </Card>
-        ))}
+        {services.map((servicio) => {
+          const card = toServiceCardDTO(servicio)
+
+          return (
+            <Card
+              key={card.id}
+              selectable
+              selected={servicioSeleccionado?.id === servicio.id}
+              onClick={() => onSelect(servicio)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && onSelect(servicio)}
+              className="flex min-h-44 flex-col"
+            >
+              <ServiceCardContent card={card} />
+            </Card>
+          )
+        })}
       </div>
       <div className="mt-8 flex justify-end">
         <Button onClick={onNext} disabled={!servicioSeleccionado}>

@@ -34,6 +34,15 @@ export interface Treatment {
   description?: string
 }
 
+// Contrato de interfaz para el renderizado dinamico del catalogo armonizado.
+export interface ServiceCardDTO {
+  id: string
+  title: string
+  priceLabel: string
+  durationLabel: string
+  description?: string
+}
+
 export interface Profesional {
   id: string
   sucursal_id: string

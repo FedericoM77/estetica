@@ -1,4 +1,4 @@
-import type { Servicio, Treatment } from '../types'
+import type { ServiceCardDTO, Servicio, Treatment } from '../types'
 
 const nfARS = new Intl.NumberFormat('es-AR', {
   style: 'currency',
@@ -22,6 +22,16 @@ export function toTreatment(servicio: Servicio): Treatment | null {
     price: servicio.precio,
     isVariablePrice: servicio.precio_desde,
     durationMinutes: servicio.duracion_minutos,
+    description: servicio.descripcion ?? undefined,
+  }
+}
+
+export function toServiceCardDTO(servicio: Servicio): ServiceCardDTO {
+  return {
+    id: servicio.id,
+    title: servicio.nombre,
+    priceLabel: formatPrecio(servicio),
+    durationLabel: `${servicio.duracion_minutos} MIN`,
     description: servicio.descripcion ?? undefined,
   }
 }
