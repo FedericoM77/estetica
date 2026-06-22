@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 const navItems = ['Agenda', 'Clientes', 'Tratamientos', 'Caja/Ventas', 'Configuracion']
 
 const kpis = [
@@ -73,17 +71,10 @@ function KpiCard({ label, value, detail, tone }: (typeof kpis)[number]) {
 }
 
 export function DashboardPage() {
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('aurum-theme') === 'dark')
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark)
-    localStorage.setItem('aurum-theme', isDark ? 'dark' : 'light')
-  }, [isDark])
-
   return (
     <section>
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-slate-900 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.55)] transition-colors dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100">
-        <header className="flex flex-col gap-4 border-b border-slate-200 bg-white/80 px-5 py-4 backdrop-blur md:flex-row md:items-center md:justify-between dark:border-slate-800 dark:bg-slate-950/80">
+        <header className="flex flex-col gap-4 border-b border-slate-200 bg-white/80 px-5 py-4 pr-44 backdrop-blur md:flex-row md:items-center md:justify-between dark:border-slate-800 dark:bg-slate-950/80">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-600 dark:text-sky-300">
               CRM medico-premium
@@ -92,28 +83,6 @@ export function DashboardPage() {
               Clinica Aura Visual & Bienestar
             </h1>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setIsDark((value) => !value)}
-            className="inline-flex w-fit items-center gap-3 rounded-full border border-slate-200 bg-slate-100 p-1 text-sm font-medium text-slate-700 transition dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-            aria-pressed={isDark}
-          >
-            <span
-              className={`rounded-full px-4 py-2 transition ${
-                !isDark ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-400'
-              }`}
-            >
-              Dia
-            </span>
-            <span
-              className={`rounded-full px-4 py-2 transition ${
-                isDark ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-500'
-              }`}
-            >
-              Noche
-            </span>
-          </button>
         </header>
 
         <div className="grid min-h-[760px] grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)_320px]">

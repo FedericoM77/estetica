@@ -12,6 +12,7 @@ import { TurnosAdminPage } from './pages/admin/TurnosAdminPage'
 import { EsteticistasPage } from './pages/admin/EsteticistasPage'
 import { TratamientosPage } from './pages/admin/TratamientosPage'
 import { SucursalesPage } from './pages/admin/SucursalesPage'
+import { ThemeToggle } from './components/ui/ThemeToggle'
 
 export default function App() {
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <ThemeToggle />
         <Routes>
           {/* Acceso público */}
           <Route path="/ingresar" element={<IngresarPage />} />
