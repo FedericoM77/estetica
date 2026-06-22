@@ -25,6 +25,15 @@ export interface Servicio {
   creado_at: string
 }
 
+export interface Treatment {
+  id: string
+  name: string
+  price: number
+  isVariablePrice: boolean
+  durationMinutes: number
+  description?: string
+}
+
 export interface Profesional {
   id: string
   sucursal_id: string
