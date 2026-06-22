@@ -18,7 +18,7 @@ export function ThemeToggle() {
     >
       <span
         className={`rounded-full px-3 py-1.5 transition ${
-          !isDark ? 'bg-sky-500 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'
+          !isDark ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'
         }`}
       >
         Dia

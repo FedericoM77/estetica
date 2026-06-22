@@ -30,7 +30,7 @@ export function AdminLayout() {
             Administracion
           </p>
           {usingMocks && (
-            <span className="mt-2 inline-block rounded-full border border-sky-500/30 px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] text-sky-600 dark:border-amber-400/25 dark:text-amber-300">
+            <span className="mt-2 inline-block rounded-full border border-violet-500/25 px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] text-violet-600 dark:border-amber-400/25 dark:text-amber-300">
               Demo
             </span>
           )}
@@ -45,8 +45,8 @@ export function AdminLayout() {
               className={({ isActive }) =>
                 `rounded-btn px-3 py-2 text-sm transition-colors ${
                   isActive
-                    ? 'bg-sky-500 text-white shadow-sm shadow-sky-500/20 dark:border-l-2 dark:border-amber-300 dark:bg-zinc-900 dark:text-[#E6C687] dark:shadow-none'
-                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-zinc-500 dark:hover:bg-zinc-900/70 dark:hover:text-zinc-100'
+                    ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-sm shadow-violet-500/20 dark:border-l-2 dark:border-amber-300 dark:bg-zinc-900 dark:bg-none dark:text-[#E6C687] dark:shadow-none'
+                    : 'text-slate-500 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-500 dark:hover:bg-zinc-900/70 dark:hover:text-zinc-100'
                 }`
               }
             >
@@ -90,8 +90,8 @@ export function AdminLayout() {
               className={({ isActive }) =>
                 `whitespace-nowrap rounded-btn px-3 py-1.5 text-xs transition-colors ${
                   isActive
-                    ? 'bg-sky-500 text-white dark:bg-zinc-900 dark:text-[#E6C687]'
-                    : 'text-slate-500 hover:text-slate-950 dark:text-zinc-500 dark:hover:text-zinc-100'
+                    ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white dark:bg-zinc-900 dark:bg-none dark:text-[#E6C687]'
+                    : 'text-slate-500 hover:text-violet-700 dark:text-zinc-500 dark:hover:text-zinc-100'
                 }`
               }
             >
