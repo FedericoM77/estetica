@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { api, SlotOcupadoError, type CrearTurnoInput, type CrearTurnoResult } from '../lib/api'
+import { enviarConfirmacionTurno } from '../lib/whatsapp'
 
 /**
  * Crea un turno CONFIRMADO (upsert de cliente por teléfono + insert).
@@ -15,7 +18,38 @@ export function useCreateTurno() {
     setErrorCreateTurno(null)
 
     try {
-      return await api.crearTurno(input)
+      const result = await api.crearTurno(input)
+      const fechaHoraLegible = format(
+        new Date(result.turno.fecha_hora),
+        "EEEE d 'de' MMMM 'a las' HH:mm 'hs'",
+        { locale: es },
+      )
+      const medioPago = input.medioPago?.replace('_', ' ')
+
+      void Promise.allSettled([
+        enviarConfirmacionTurno({
+          telefono: result.cliente.telefono,
+          nombreCliente: result.cliente.nombre,
+          servicio: result.servicio.nombre,
+          profesional: result.profesional.nombre,
+          fechaHoraLegible,
+          medioPago,
+          destinatario: 'cliente',
+        }),
+        result.profesional.telefono
+          ? enviarConfirmacionTurno({
+              telefono: result.profesional.telefono,
+              nombreCliente: result.cliente.nombre,
+              servicio: result.servicio.nombre,
+              profesional: result.profesional.nombre,
+              fechaHoraLegible,
+              medioPago,
+              destinatario: 'profesional',
+            })
+          : Promise.resolve(),
+      ])
+
+      return result
     } catch (error) {
       if (error instanceof SlotOcupadoError) {
         setErrorCreateTurno(

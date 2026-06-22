@@ -11,6 +11,7 @@ import type {
   Servicio,
   ServicioInput,
   Sucursal,
+  SucursalInput,
   Turno,
   TurnoDetalle,
 } from '../../types'
@@ -27,6 +28,13 @@ import {
 const UNIQUE_VIOLATION = '23505'
 /** Código Postgres de violación de foreign key (fila referenciada). */
 const FOREIGN_KEY_VIOLATION = '23503'
+
+function notasConPago(notas: string | undefined, medioPago: string | undefined): string | null {
+  const partes = []
+  if (medioPago) partes.push(`Medio de pago: ${medioPago}`)
+  if (notas?.trim()) partes.push(notas.trim())
+  return partes.length > 0 ? partes.join(' | ') : null
+}
 
 function client(): SupabaseClient {
   if (!supabase) {
@@ -127,7 +135,7 @@ export const supabaseApi: DataApi = {
         servicio_id: input.servicioId,
         fecha_hora: input.fechaHora,
         estado: 'CONFIRMADO',
-        notas: input.notas ?? null,
+        notas: notasConPago(input.notas, input.medioPago),
       })
       .select()
       .single()
@@ -137,7 +145,20 @@ export const supabaseApi: DataApi = {
       throw errorTurno
     }
 
-    return { turno: turno as Turno, cliente: cliente_ }
+    const [{ data: profesional, error: errorProfesional }, { data: servicio, error: errorServicio }] =
+      await Promise.all([
+        client().from('profesionales').select('*').eq('id', input.profesionalId).single(),
+        client().from('servicios').select('*').eq('id', input.servicioId).single(),
+      ])
+    if (errorProfesional) throw errorProfesional
+    if (errorServicio) throw errorServicio
+
+    return {
+      turno: turno as Turno,
+      cliente: cliente_,
+      profesional: profesional as Profesional,
+      servicio: servicio as Servicio,
+    }
   },
 
   async getTurnosDetalle(filtros: FiltrosTurnos): Promise<TurnoDetalle[]> {
@@ -176,6 +197,37 @@ export const supabaseApi: DataApi = {
     const { data, error } = await client().from('sucursales').select('*').order('nombre')
     if (error) throw error
     return (data ?? []) as Sucursal[]
+  },
+
+  async crearSucursal(input: SucursalInput): Promise<Sucursal> {
+    const { data, error } = await client()
+      .from('sucursales')
+      .insert({ nombre: input.nombre.trim(), direccion: input.direccion.trim() })
+      .select()
+      .single()
+    if (error) throw error
+    return data as Sucursal
+  },
+
+  async actualizarSucursal(id: string, input: SucursalInput): Promise<Sucursal> {
+    const { data, error } = await client()
+      .from('sucursales')
+      .update({ nombre: input.nombre.trim(), direccion: input.direccion.trim() })
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw error
+    return data as Sucursal
+  },
+
+  async eliminarSucursal(id: string): Promise<void> {
+    const { error } = await client().from('sucursales').delete().eq('id', id)
+    if (error) {
+      if (error.code === FOREIGN_KEY_VIOLATION) {
+        throw new Error('No se puede eliminar: la sucursal tiene profesionales asignados.')
+      }
+      throw error
+    }
   },
 
   async getServiciosAdmin(): Promise<Servicio[]> {
@@ -257,6 +309,7 @@ export const supabaseApi: DataApi = {
         sucursal_id: input.sucursal_id,
         nombre: input.nombre.trim(),
         especialidad: input.especialidad.trim(),
+        telefono: input.telefono.trim() || null,
         activo: input.activo,
       })
       .select()
@@ -274,6 +327,7 @@ export const supabaseApi: DataApi = {
         sucursal_id: input.sucursal_id,
         nombre: input.nombre.trim(),
         especialidad: input.especialidad.trim(),
+        telefono: input.telefono.trim() || null,
         activo: input.activo,
       })
       .eq('id', id)

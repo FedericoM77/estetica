@@ -12,6 +12,7 @@ import type {
   Servicio,
   ServicioInput,
   Sucursal,
+  SucursalInput,
   Turno,
   TurnoDetalle,
 } from '../../types'
@@ -38,6 +39,17 @@ function detallar(db: MockDb, t: Turno): TurnoDetalle {
   }
 }
 
+function normalizarProfesional(p: Profesional): Profesional {
+  return { ...p, telefono: p.telefono ?? null }
+}
+
+function notasConPago(notas: string | undefined, medioPago: string | undefined): string | null {
+  const partes = []
+  if (medioPago) partes.push(`Medio de pago: ${medioPago}`)
+  if (notas?.trim()) partes.push(notas.trim())
+  return partes.length > 0 ? partes.join(' | ') : null
+}
+
 export const mockApi: DataApi = {
   async getServicios(): Promise<Servicio[]> {
     await delay()
@@ -47,7 +59,7 @@ export const mockApi: DataApi = {
   async getProfesionales(servicioId: string | null): Promise<Profesional[]> {
     await delay()
     const db = leerDb()
-    const activos = db.profesionales.filter((p) => p.activo)
+    const activos = db.profesionales.filter((p) => p.activo).map(normalizarProfesional)
     if (!servicioId) return activos
     return activos.filter((p) => db.profesionalServicios[p.id]?.includes(servicioId))
   },
@@ -105,13 +117,17 @@ export const mockApi: DataApi = {
       servicio_id: input.servicioId,
       fecha_hora: input.fechaHora,
       estado: 'CONFIRMADO',
-      notas: input.notas ?? null,
+      notas: notasConPago(input.notas, input.medioPago),
       creado_at: new Date().toISOString(),
     }
     db.turnos.push(turno)
     guardarDb(db)
 
-    return { turno, cliente }
+    const profesional = db.profesionales.find((p) => p.id === input.profesionalId)
+    const servicio = db.servicios.find((s) => s.id === input.servicioId)
+    if (!profesional || !servicio) throw new Error('No se pudo detallar el turno creado.')
+
+    return { turno, cliente, profesional: normalizarProfesional(profesional), servicio }
   },
 
   async getTurnosDetalle(filtros: FiltrosTurnos): Promise<TurnoDetalle[]> {
@@ -152,6 +168,41 @@ export const mockApi: DataApi = {
   async getSucursales(): Promise<Sucursal[]> {
     await delay()
     return leerDb().sucursales
+  },
+
+  async crearSucursal(input: SucursalInput): Promise<Sucursal> {
+    await delay()
+    const db = leerDb()
+    const sucursal: Sucursal = {
+      id: nuevoId(),
+      nombre: input.nombre.trim(),
+      direccion: input.direccion.trim(),
+      creado_at: new Date().toISOString(),
+    }
+    db.sucursales.push(sucursal)
+    guardarDb(db)
+    return sucursal
+  },
+
+  async actualizarSucursal(id: string, input: SucursalInput): Promise<Sucursal> {
+    await delay()
+    const db = leerDb()
+    const sucursal = db.sucursales.find((s) => s.id === id)
+    if (!sucursal) throw new Error('Sucursal no encontrada')
+    sucursal.nombre = input.nombre.trim()
+    sucursal.direccion = input.direccion.trim()
+    guardarDb(db)
+    return sucursal
+  },
+
+  async eliminarSucursal(id: string): Promise<void> {
+    await delay()
+    const db = leerDb()
+    if (db.profesionales.some((p) => p.sucursal_id === id)) {
+      throw new Error('No se puede eliminar: la sucursal tiene profesionales asignados.')
+    }
+    db.sucursales = db.sucursales.filter((s) => s.id !== id)
+    guardarDb(db)
   },
 
   async getServiciosAdmin(): Promise<Servicio[]> {
@@ -210,7 +261,7 @@ export const mockApi: DataApi = {
     const db = leerDb()
     return [...db.profesionales]
       .sort((a, b) => a.nombre.localeCompare(b.nombre))
-      .map((p) => ({ ...p, servicioIds: db.profesionalServicios[p.id] ?? [] }))
+      .map((p) => ({ ...normalizarProfesional(p), servicioIds: db.profesionalServicios[p.id] ?? [] }))
   },
 
   async crearProfesional(input: ProfesionalInput): Promise<Profesional> {
@@ -221,6 +272,7 @@ export const mockApi: DataApi = {
       sucursal_id: input.sucursal_id,
       nombre: input.nombre.trim(),
       especialidad: input.especialidad.trim(),
+      telefono: input.telefono.trim() || null,
       activo: input.activo,
       creado_at: new Date().toISOString(),
     }
@@ -238,6 +290,7 @@ export const mockApi: DataApi = {
     profesional.sucursal_id = input.sucursal_id
     profesional.nombre = input.nombre.trim()
     profesional.especialidad = input.especialidad.trim()
+    profesional.telefono = input.telefono.trim() || null
     profesional.activo = input.activo
     db.profesionalServicios[id] = [...input.servicioIds]
     guardarDb(db)

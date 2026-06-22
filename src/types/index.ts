@@ -7,6 +7,11 @@ export interface Sucursal {
   creado_at: string
 }
 
+export interface SucursalInput {
+  nombre: string
+  direccion: string
+}
+
 export interface Servicio {
   id: string
   nombre: string
@@ -25,6 +30,7 @@ export interface Profesional {
   sucursal_id: string
   nombre: string
   especialidad: string
+  telefono: string | null
   activo: boolean
   creado_at: string
 }
@@ -64,6 +70,8 @@ export interface DatosCliente {
   email: string
 }
 
+export type MedioPagoReserva = 'LOCAL' | 'TRANSFERENCIA' | 'MERCADO_PAGO'
+
 // ── Auth / Roles ──────────────────────────────────────────────
 
 export type Rol = 'ADMIN' | 'CLIENTE'
@@ -95,6 +103,7 @@ export interface ProfesionalInput {
   sucursal_id: string
   nombre: string
   especialidad: string
+  telefono: string
   activo: boolean
   /** Ids de servicios que realiza. */
   servicioIds: string[]

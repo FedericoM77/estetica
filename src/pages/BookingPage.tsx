@@ -7,7 +7,7 @@ import { StepDateTime } from '../components/booking/StepDateTime'
 import { StepConfirmation } from '../components/booking/StepConfirmation'
 import { SuccessScreen } from '../components/booking/SuccessScreen'
 import { useAuth } from '../hooks/useAuth'
-import type { DatosCliente, Profesional, Servicio, Slot } from '../types'
+import type { DatosCliente, MedioPagoReserva, Profesional, Servicio, Slot } from '../types'
 
 type Paso = 1 | 2 | 3 | 4 | 'success'
 
@@ -19,6 +19,7 @@ export function BookingPage() {
   const [fecha, setFecha] = useState<Date | null>(null)
   const [slot, setSlot] = useState<Slot | null>(null)
   const [cliente, setCliente] = useState<DatosCliente | null>(null)
+  const [medioPago, setMedioPago] = useState<MedioPagoReserva | null>(null)
   // Si el paso 2 se salteó automáticamente, "volver" desde el paso 3 va al 1
   const [pasoProfesionalSalteado, setPasoProfesionalSalteado] = useState(false)
 
@@ -53,6 +54,7 @@ export function BookingPage() {
     setFecha(null)
     setSlot(null)
     setCliente(null)
+    setMedioPago(null)
     setPasoProfesionalSalteado(false)
     setPaso(1)
   }
@@ -104,8 +106,9 @@ export function BookingPage() {
           datosIniciales={
             usuario ? { nombre: usuario.nombre, email: usuario.email } : undefined
           }
-          onSuccess={(datos) => {
+          onSuccess={(datos, pago) => {
             setCliente(datos)
+            setMedioPago(pago)
             setPaso('success')
           }}
           onBack={() => setPaso(3)}
@@ -118,6 +121,7 @@ export function BookingPage() {
           profesional={profesional}
           slot={slot}
           cliente={cliente}
+          medioPago={medioPago}
           onNuevaReserva={reiniciar}
         />
       )}

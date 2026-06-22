@@ -1,39 +1,75 @@
-// Gateway de WhatsApp — módulo desacoplado, stub en el MVP.
-// Cuando se active Z-API / Evolution API, este es el único archivo a tocar.
+export interface WhatsAppMensaje {
+  telefono: string
+  texto: string
+}
 
 export interface ConfirmacionTurnoMensaje {
   telefono: string
   nombreCliente: string
   servicio: string
   profesional: string
-  /** Fecha y hora ya formateadas para mostrar al paciente */
   fechaHoraLegible: string
+  medioPago?: string
+  destinatario: 'cliente' | 'profesional'
 }
 
 const gatewayUrl = import.meta.env.VITE_WHATSAPP_GATEWAY_URL as string | undefined
 const gatewayToken = import.meta.env.VITE_WHATSAPP_TOKEN as string | undefined
 
-/**
- * Envía la confirmación de turno por WhatsApp.
- * Stub: si el gateway no está configurado, loguea y resuelve sin error.
- * Nunca debe romper el flujo de reserva — el turno ya está confirmado en DB.
- */
-export async function enviarConfirmacionTurno(
-  mensaje: ConfirmacionTurnoMensaje,
-): Promise<void> {
+function textoConfirmacion(mensaje: ConfirmacionTurnoMensaje): string {
+  const pago = mensaje.medioPago ? `\nPago: ${mensaje.medioPago}` : ''
+  if (mensaje.destinatario === 'profesional') {
+    return [
+      'Nuevo turno reservado en AURUM',
+      `Paciente: ${mensaje.nombreCliente}`,
+      `Tratamiento: ${mensaje.servicio}`,
+      `Fecha: ${mensaje.fechaHoraLegible}`,
+      pago.trim(),
+    ]
+      .filter(Boolean)
+      .join('\n')
+  }
+
+  return [
+    `Hola ${mensaje.nombreCliente}, tu turno en AURUM fue confirmado.`,
+    `Tratamiento: ${mensaje.servicio}`,
+    `Profesional: ${mensaje.profesional}`,
+    `Fecha: ${mensaje.fechaHoraLegible}`,
+    pago.trim(),
+    'Te esperamos.',
+  ]
+    .filter(Boolean)
+    .join('\n')
+}
+
+export async function enviarWhatsApp({ telefono, texto }: WhatsAppMensaje): Promise<void> {
   if (!gatewayUrl || !gatewayToken) {
-    console.info('[whatsapp] Gateway no configurado, se omite el envío.', {
-      telefono: mensaje.telefono,
-      servicio: mensaje.servicio,
-    })
+    console.info('[whatsapp] Gateway no configurado, se omite el envio.', { telefono, texto })
     return
   }
 
   try {
-    // TODO(v2): implementar contra Z-API / Evolution API.
-    console.info('[whatsapp] Envío pendiente de implementación.', mensaje)
+    const response = await fetch(gatewayUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${gatewayToken}`,
+      },
+      body: JSON.stringify({ phone: telefono, message: texto }),
+    })
+    if (!response.ok) {
+      throw new Error(`Gateway WhatsApp respondio ${response.status}`)
+    }
   } catch (error) {
-    // El envío de notificación nunca debe abortar la reserva.
-    console.error('[whatsapp] Error al enviar confirmación', error)
+    console.error('[whatsapp] Error al enviar mensaje', error)
   }
+}
+
+export async function enviarConfirmacionTurno(
+  mensaje: ConfirmacionTurnoMensaje,
+): Promise<void> {
+  await enviarWhatsApp({
+    telefono: mensaje.telefono,
+    texto: textoConfirmacion(mensaje),
+  })
 }

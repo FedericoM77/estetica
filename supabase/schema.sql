@@ -31,6 +31,7 @@ CREATE TABLE profesionales (
   sucursal_id UUID NOT NULL REFERENCES sucursales(id) ON DELETE CASCADE,
   nombre VARCHAR(100) NOT NULL,
   especialidad VARCHAR(100) NOT NULL,
+  telefono VARCHAR(30),
   activo BOOLEAN DEFAULT TRUE,
   creado_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
@@ -122,11 +123,11 @@ INSERT INTO servicios (id, nombre, descripcion, duracion_minutos, precio, precio
   ('b0000000-0000-0000-0000-000000000021', 'Laminado de cejas', NULL, 45, 35000, FALSE),
   ('b0000000-0000-0000-0000-000000000022', 'Perfilado o tinte de cejas', NULL, 20, 10000, FALSE);
 
-INSERT INTO profesionales (id, sucursal_id, nombre, especialidad) VALUES
-  ('c0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Eugenia Ríos', 'Peluquería'),
-  ('c0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'Valentina Ruiz', 'Manicura y Pedicura'),
-  ('c0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001', 'Carolina Méndez', 'Maquillaje y Pestañas'),
-  ('c0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000001', 'Sofía Aguilar', 'Cosmetología Facial');
+INSERT INTO profesionales (id, sucursal_id, nombre, especialidad, telefono) VALUES
+  ('c0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'Eugenia Ríos', 'Peluquería', '+5491155553001'),
+  ('c0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'Valentina Ruiz', 'Manicura y Pedicura', '+5491155553002'),
+  ('c0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001', 'Carolina Méndez', 'Maquillaje y Pestañas', '+5491155553003'),
+  ('c0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000001', 'Sofía Aguilar', 'Cosmetología Facial', '+5491155553004');
 
 INSERT INTO profesional_servicios (profesional_id, servicio_id) VALUES
   -- Eugenia: peluquería (1..6)

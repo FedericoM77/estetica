@@ -28,6 +28,7 @@ export function EsteticistasPage() {
       sucursal_id: sucursales[0]?.id ?? '',
       nombre: '',
       especialidad: '',
+      telefono: '',
       activo: true,
       servicioIds: [],
     }
@@ -45,6 +46,7 @@ export function EsteticistasPage() {
       sucursal_id: p.sucursal_id,
       nombre: p.nombre,
       especialidad: p.especialidad,
+      telefono: p.telefono ?? '',
       activo: p.activo,
       servicioIds: [...p.servicioIds],
     })
@@ -77,6 +79,10 @@ export function EsteticistasPage() {
     }
     if (!form.sucursal_id) {
       setErrorForm('Seleccioná una sucursal.')
+      return
+    }
+    if (!/^\+?[\d\s-]{8,20}$/.test(form.telefono.trim())) {
+      setErrorForm('Ingresá un teléfono válido para WhatsApp.')
       return
     }
     if (form.servicioIds.length === 0) {
@@ -121,7 +127,7 @@ export function EsteticistasPage() {
             {editando ? 'Editar esteticista' : 'Nuevo esteticista'}
           </h3>
           <form onSubmit={guardar} className="space-y-4" noValidate>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               <Input
                 label="Nombre"
                 value={form.nombre}
@@ -131,6 +137,13 @@ export function EsteticistasPage() {
                 label="Especialidad"
                 value={form.especialidad}
                 onChange={(e) => setForm((f) => f && { ...f, especialidad: e.target.value })}
+              />
+              <Input
+                label="WhatsApp"
+                type="tel"
+                value={form.telefono}
+                placeholder="+54 9 11 5555-1234"
+                onChange={(e) => setForm((f) => f && { ...f, telefono: e.target.value })}
               />
             </div>
 
@@ -212,6 +225,7 @@ export function EsteticistasPage() {
                   )}
                 </p>
                 <p className="mt-0.5 text-xs text-muted">
+                  {p.telefono ? `${p.telefono} · ` : ''}
                   {p.servicioIds.length > 0
                     ? p.servicioIds.map(nombreServicio).join(' · ')
                     : 'Sin tratamientos asignados'}

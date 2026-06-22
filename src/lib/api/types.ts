@@ -3,12 +3,14 @@ import type {
   DatosCliente,
   EstadoTurno,
   Metricas,
+  MedioPagoReserva,
   Profesional,
   ProfesionalConServicios,
   ProfesionalInput,
   Servicio,
   ServicioInput,
   Sucursal,
+  SucursalInput,
   Turno,
   TurnoDetalle,
 } from '../../types'
@@ -33,12 +35,15 @@ export interface CrearTurnoInput {
   servicioId: string
   /** ISO string del inicio del turno */
   fechaHora: string
+  medioPago?: MedioPagoReserva
   notas?: string
 }
 
 export interface CrearTurnoResult {
   turno: Turno
   cliente: Cliente
+  profesional: Profesional
+  servicio: Servicio
 }
 
 export interface FiltrosTurnos {
@@ -74,6 +79,9 @@ export interface DataApi {
 
   // ── ABM — catálogo administrado desde el panel ──────────────
   getSucursales(): Promise<Sucursal[]>
+  crearSucursal(input: SucursalInput): Promise<Sucursal>
+  actualizarSucursal(id: string, input: SucursalInput): Promise<Sucursal>
+  eliminarSucursal(id: string): Promise<void>
 
   /** Tratamientos incluyendo inactivos (vista admin). */
   getServiciosAdmin(): Promise<Servicio[]>

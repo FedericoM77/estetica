@@ -2,14 +2,21 @@ import { addMinutes, format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Button } from '../ui/Button'
 import { Card } from '../ui/Card'
-import type { DatosCliente, Profesional, Servicio, Slot } from '../../types'
+import type { DatosCliente, MedioPagoReserva, Profesional, Servicio, Slot } from '../../types'
 
 interface SuccessScreenProps {
   servicio: Servicio
   profesional: Profesional
   slot: Slot
   cliente: DatosCliente
+  medioPago: MedioPagoReserva | null
   onNuevaReserva: () => void
+}
+
+function labelMedioPago(medioPago: MedioPagoReserva): string {
+  if (medioPago === 'LOCAL') return 'Pago en sucursal'
+  if (medioPago === 'TRANSFERENCIA') return 'Sena por transferencia'
+  return 'Mercado Pago'
 }
 
 /** Formato de fechas para URL de Google Calendar: yyyyMMdd'T'HHmmss (hora local). */
@@ -22,6 +29,7 @@ export function SuccessScreen({
   profesional,
   slot,
   cliente,
+  medioPago,
   onNuevaReserva,
 }: SuccessScreenProps) {
   const inicio = new Date(slot.fechaHora)
@@ -63,6 +71,12 @@ export function SuccessScreen({
               {format(inicio, "EEEE d 'de' MMMM 'a las' HH:mm 'hs'", { locale: es })}
             </dd>
           </div>
+          {medioPago && (
+            <div>
+              <dt className="text-muted">Medio de pago</dt>
+              <dd className="text-ink">{labelMedioPago(medioPago)}</dd>
+            </div>
+          )}
         </dl>
       </Card>
 

@@ -10,6 +10,12 @@ import { addDays, set } from 'date-fns'
 import type { Cliente, Profesional, Rol, Servicio, Sucursal, Turno } from '../../types'
 
 const STORAGE_KEY = 'aurum-demo-db-v3'
+const TELEFONOS_PROFESIONALES_DEMO: Record<string, string> = {
+  'c0000000-0000-0000-0000-000000000001': '+5491155553001',
+  'c0000000-0000-0000-0000-000000000002': '+5491155553002',
+  'c0000000-0000-0000-0000-000000000003': '+5491155553003',
+  'c0000000-0000-0000-0000-000000000004': '+5491155553004',
+}
 
 /** Usuario del modo demo (equivale a una fila de auth.users + perfiles). */
 export interface MockUsuario {
@@ -112,10 +118,10 @@ function seedInicial(): MockDb {
   const pid = (n: number) => `c0000000-0000-0000-0000-${String(n).padStart(12, '0')}`
 
   const profesionales: Profesional[] = [
-    { id: pid(1), sucursal_id: SUCURSAL_ID, nombre: 'Eugenia Ríos', especialidad: 'Peluquería', activo: true, creado_at: ahora },
-    { id: pid(2), sucursal_id: SUCURSAL_ID, nombre: 'Valentina Ruiz', especialidad: 'Manicura y Pedicura', activo: true, creado_at: ahora },
-    { id: pid(3), sucursal_id: SUCURSAL_ID, nombre: 'Carolina Méndez', especialidad: 'Maquillaje y Pestañas', activo: true, creado_at: ahora },
-    { id: pid(4), sucursal_id: SUCURSAL_ID, nombre: 'Sofía Aguilar', especialidad: 'Cosmetología Facial', activo: true, creado_at: ahora },
+    { id: pid(1), sucursal_id: SUCURSAL_ID, nombre: 'Eugenia Ríos', especialidad: 'Peluquería', telefono: '+5491155553001', activo: true, creado_at: ahora },
+    { id: pid(2), sucursal_id: SUCURSAL_ID, nombre: 'Valentina Ruiz', especialidad: 'Manicura y Pedicura', telefono: '+5491155553002', activo: true, creado_at: ahora },
+    { id: pid(3), sucursal_id: SUCURSAL_ID, nombre: 'Carolina Méndez', especialidad: 'Maquillaje y Pestañas', telefono: '+5491155553003', activo: true, creado_at: ahora },
+    { id: pid(4), sucursal_id: SUCURSAL_ID, nombre: 'Sofía Aguilar', especialidad: 'Cosmetología Facial', telefono: '+5491155553004', activo: true, creado_at: ahora },
   ]
 
   const profesionalServicios: Record<string, string[]> = {
@@ -218,7 +224,18 @@ function seedInicial(): MockDb {
 export function leerDb(): MockDb {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw) as MockDb
+    if (raw) {
+      const db = JSON.parse(raw) as MockDb
+      let cambio = false
+      for (const profesional of db.profesionales) {
+        if (!profesional.telefono && TELEFONOS_PROFESIONALES_DEMO[profesional.id]) {
+          profesional.telefono = TELEFONOS_PROFESIONALES_DEMO[profesional.id]
+          cambio = true
+        }
+      }
+      if (cambio) guardarDb(db)
+      return db
+    }
   } catch {
     // storage corrupto o inaccesible: re-seedear
   }
