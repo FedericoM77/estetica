@@ -3,24 +3,24 @@ import { usingMocks } from '../../lib/api'
 
 export function Header() {
   return (
-    <header className="border-b border-line">
-      <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-6">
+    <header className="relative border-b border-amber-100/60 bg-white/20 backdrop-blur-sm dark:border-white/10 dark:bg-black/10">
+      <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-8">
         <Link to="/" className="flex flex-col items-center">
-          <h1 className="font-display text-3xl font-light tracking-[0.35em] text-ink sm:text-4xl">
+          <h1 className="font-display text-4xl font-light tracking-[0.45em] text-amber-700 sm:text-5xl dark:text-[#E6C687]">
             AURUM
           </h1>
-          <p className="mt-1 text-xs uppercase tracking-[0.25em] text-muted">
+          <p className="mt-2 text-xs uppercase tracking-[0.38em] text-amber-800/70 dark:text-amber-100/70">
             Centro de Estetica Avanzada
           </p>
         </Link>
 
-        <p className="mt-4 text-center text-sm text-muted">
+        <p className="mt-5 max-w-xl text-center text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           Reserva libre online: elegi especialidad, profesional, horario y confirma tu turno.
         </p>
 
         {usingMocks && (
           <span
-            className="mt-3 rounded-full border border-gold/40 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-gold"
+            className="mt-4 rounded-full border border-amber-200/70 bg-white/45 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-amber-700 backdrop-blur dark:border-amber-300/25 dark:bg-white/5 dark:text-amber-200"
             title="Datos de demostracion en este navegador, sin base de datos real"
           >
             Demo
