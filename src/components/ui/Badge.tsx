@@ -9,12 +9,18 @@ const estadoStyles: Record<EstadoTurno, string> = {
     'border-success/40 text-success dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300',
 }
 
+const estadoLabels: Record<EstadoTurno, string> = {
+  CONFIRMADO: 'CONFIRMED',
+  CANCELADO: 'CANCELLED',
+  COMPLETADO: 'COMPLETED',
+}
+
 export function Badge({ estado }: { estado: EstadoTurno }) {
   return (
     <span
       className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium tracking-wide ${estadoStyles[estado]}`}
     >
-      {estado}
+      {estadoLabels[estado]}
     </span>
   )
 }

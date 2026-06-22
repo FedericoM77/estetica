@@ -170,16 +170,6 @@ function seedInicial(): MockDb {
       creado_at: ahora,
     },
     {
-      id: 'e0000000-0000-0000-0000-000000000003',
-      cliente_id: clientes[0].id,
-      profesional_id: pid(3), // Carolina — Maquillaje
-      servicio_id: sid(15), // Maquillaje social
-      fecha_hora: aLas(addDays(hoy, 2), 11),
-      estado: 'CONFIRMADO',
-      notas: null,
-      creado_at: ahora,
-    },
-    {
       id: 'e0000000-0000-0000-0000-000000000004',
       cliente_id: clientes[1].id,
       profesional_id: pid(4), // Sofía — Facial
@@ -233,6 +223,9 @@ export function leerDb(): MockDb {
           cambio = true
         }
       }
+      const cantidadTurnos = db.turnos.length
+      db.turnos = db.turnos.filter((turno) => turno.id !== 'e0000000-0000-0000-0000-000000000003')
+      if (db.turnos.length !== cantidadTurnos) cambio = true
       if (cambio) guardarDb(db)
       return db
     }
