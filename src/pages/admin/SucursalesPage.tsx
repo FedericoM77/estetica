@@ -71,7 +71,7 @@ export function SucursalesPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div>
           <h2 className="font-display text-2xl font-light text-slate-950 dark:text-white">
             Sucursales
