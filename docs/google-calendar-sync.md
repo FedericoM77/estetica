@@ -1,6 +1,6 @@
 # Sincronizacion bidireccional Google Calendar
 
-Modulo para Aurum en modo `INDEPENDENT`: un solo profesional, sin recepcion, donde el recurso bloqueante es su Google Calendar personal.
+Modulo para GlowDesk en modo `INDEPENDENT`: un solo profesional, sin recepcion, donde el recurso bloqueante es su Google Calendar personal.
 
 Fuentes oficiales usadas:
 
@@ -13,15 +13,15 @@ Fuentes oficiales usadas:
 sequenceDiagram
   autonumber
   actor Cliente
-  participant CRM as Aurum CRM
-  participant DB as DB Aurum
+  participant CRM as GlowDesk CRM
+  participant DB as DB GlowDesk
   participant GCal as Google Calendar API
   participant Pro as Profesional
-  participant Webhook as Webhook Aurum
+  participant Webhook as Webhook GlowDesk
 
   Cliente->>CRM: Reserva turno online
   CRM->>DB: Crea turno CONFIRMADO
-  CRM->>GCal: events.insert con extendedProperties.private.aurumOrigin=AURUM
+  CRM->>GCal: events.insert con extendedProperties.private.glowdeskOrigin=GLOWDESK
   GCal-->>CRM: google_event_id
   CRM->>DB: Guarda google_event_id en turno
 
@@ -59,7 +59,7 @@ enum BusinessMode {
 }
 
 enum CalendarSyncOrigin {
-  AURUM
+  GLOWDESK
   GOOGLE
 }
 
@@ -93,7 +93,7 @@ model Appointment {
   startAt       DateTime
   endAt         DateTime
   status        String
-  syncOrigin    CalendarSyncOrigin @default(AURUM)
+  syncOrigin    CalendarSyncOrigin @default(GLOWDESK)
   updatedAt     DateTime           @updatedAt
 }
 
@@ -146,15 +146,15 @@ Respuestas:
 ## C. Reglas de sincronizacion
 
 - CRM -> Google: crear evento con `extendedProperties.private`:
-  - `aurumTurnoId`
-  - `aurumOrigin=AURUM`
+  - `glowdeskAppointmentId`
+  - `glowdeskOrigin=GLOWDESK`
 - Google -> CRM:
   - `sync`: aceptar e ignorar.
   - `exists`: llamar `events.list` con `syncToken`.
   - evento externo confirmado en slot libre: crear `AgendaBlock`.
   - evento externo cancelado: eliminar bloqueo o cancelar turno asociado.
-  - evento asociado a turno Aurum: mover/cancelar turno local.
-  - evento con `aurumOrigin=AURUM`: ignorar para evitar bucle infinito.
+  - evento asociado a turno GlowDesk: mover/cancelar turno local.
+  - evento con `glowdeskOrigin=GLOWDESK`: ignorar para evitar bucle infinito.
 - Si Google responde `410 Gone`, limpiar `syncToken` y ejecutar full sync controlado.
 
 ## D. Testing
@@ -165,7 +165,7 @@ Criterio Gherkin implementado en Jest:
 Escenario: Profesional bloquea horario en su celular y el CRM se actualiza
   Dado que el webhook recibe una notificacion "exists" de Google Calendar
   Cuando el caso de uso procesa el evento externo en un horario libre
-  Entonces el sistema debe registrar un bloqueo de agenda en la base de datos de Aurum
+  Entonces el sistema debe registrar un bloqueo de agenda en la base de datos de GlowDesk
 ```
 
 Archivo: `tests/integrations/google-calendar/HandleGoogleCalendarWebhookUseCase.test.ts`

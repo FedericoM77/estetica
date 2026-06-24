@@ -4,9 +4,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Paleta publica AURUM: Light por defecto, Dark con override en .dark */
-  --color-base: #faf7f2;
-  --color-surface: #ffffff;
+  /* Paleta publica GlowDesk: Light por defecto, Dark con override en .dark */
+  --color-base: #f5f5f3;
+  --color-surface: #fbfaf7;
   --color-line: #e7ded1;
   --color-gold: #b9852f;
   --color-gold-light: #f3d89b;

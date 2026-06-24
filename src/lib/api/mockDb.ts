@@ -10,6 +10,9 @@ import { addDays, set } from 'date-fns'
 import type { Cliente, Profesional, Rol, Servicio, Sucursal, Turno } from '../../types'
 
 const STORAGE_KEY = 'aurum-demo-db-v3'
+const NOMBRE_SUCURSAL_DEMO = 'GlowDesk Recoleta'
+const NOMBRE_ADMIN_DEMO = 'Administracion GlowDesk'
+const MARCA_ANTERIOR_DEMO = ['AU', 'RUM'].join('')
 const SUPER_ADMIN_DEMO: MockUsuario = {
   id: '00000000-ssss-0000-0000-000000000001',
   email: 'Alerod@demo.com',
@@ -60,7 +63,7 @@ function seedInicial(): MockDb {
   const sucursales: Sucursal[] = [
     {
       id: SUCURSAL_ID,
-      nombre: 'AURUM Recoleta',
+      nombre: NOMBRE_SUCURSAL_DEMO,
       direccion: 'Av. Callao 1234, CABA',
       creado_at: ahora,
     },
@@ -196,7 +199,7 @@ function seedInicial(): MockDb {
       email: 'admin@demo.com',
       password: '1234',
       rol: 'ADMIN',
-      nombre: 'Administración AURUM',
+      nombre: NOMBRE_ADMIN_DEMO,
       clienteId: null,
     },
     {
@@ -226,6 +229,12 @@ export function leerDb(): MockDb {
     if (raw) {
       const db = JSON.parse(raw) as MockDb
       let cambio = false
+      for (const sucursal of db.sucursales) {
+        if (sucursal.nombre.includes(MARCA_ANTERIOR_DEMO)) {
+          sucursal.nombre = sucursal.nombre.replace(MARCA_ANTERIOR_DEMO, 'GlowDesk')
+          cambio = true
+        }
+      }
       for (const profesional of db.profesionales) {
         if (!profesional.telefono && TELEFONOS_PROFESIONALES_DEMO[profesional.id]) {
           profesional.telefono = TELEFONOS_PROFESIONALES_DEMO[profesional.id]
@@ -238,6 +247,12 @@ export function leerDb(): MockDb {
       if (!db.usuarios.some((usuario) => usuario.email.toLowerCase() === SUPER_ADMIN_DEMO.email.toLowerCase())) {
         db.usuarios.unshift(SUPER_ADMIN_DEMO)
         cambio = true
+      }
+      for (const usuario of db.usuarios) {
+        if (usuario.nombre.includes(MARCA_ANTERIOR_DEMO)) {
+          usuario.nombre = NOMBRE_ADMIN_DEMO
+          cambio = true
+        }
       }
       if (cambio) guardarDb(db)
       return db

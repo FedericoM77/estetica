@@ -3,14 +3,14 @@ import { usingMocks } from '../../lib/api'
 
 export function Header() {
   return (
-    <header className="relative border-b border-amber-100/60 bg-white/20 backdrop-blur-sm dark:border-white/10 dark:bg-black/10">
+    <header className="relative border-b border-amber-100/50 bg-[#f5f5f3]/55 backdrop-blur-sm dark:border-white/10 dark:bg-black/10">
       <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-8">
         <Link to="/" className="flex flex-col items-center">
           <h1 className="font-display text-4xl font-medium uppercase leading-none tracking-widest text-zinc-800 sm:text-5xl dark:text-[#E6C687]">
-            AURUM
+            GlowDesk
           </h1>
-          <p className="mt-2 text-xs uppercase tracking-[0.38em] text-amber-800/70 dark:text-amber-100/70">
-            Centro de Estetica Avanzada
+          <p className="mt-2 text-xs uppercase tracking-[0.32em] text-amber-800/70 dark:text-amber-100/70">
+            Reservas de estetica y bienestar
           </p>
         </Link>
 

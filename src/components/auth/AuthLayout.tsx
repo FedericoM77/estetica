@@ -13,10 +13,10 @@ export function AuthLayout({ titulo, subtitulo, children, footer }: AuthLayoutPr
     <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 py-10 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
       <div className="mb-8 flex flex-col items-center">
         <h1 className="font-display text-4xl font-light tracking-[0.35em] text-slate-950 dark:text-white">
-          AURUM
+          GlowDesk
         </h1>
         <p className="mt-1 text-xs uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
-          Centro de Estetica Avanzada
+          Gestion de esteticas y bienestar
         </p>
       </div>
 

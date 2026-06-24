@@ -9,7 +9,7 @@ const baseClasses =
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-sm shadow-violet-500/20 hover:from-purple-600 hover:to-violet-700 dark:bg-sky-400 dark:bg-none dark:text-slate-950 dark:hover:bg-sky-300',
+    'bg-gradient-to-r from-amber-200 to-violet-200 text-zinc-900 shadow-sm shadow-amber-200/40 hover:from-amber-300 hover:to-violet-300 dark:from-zinc-800 dark:to-purple-950 dark:text-[#E6C687] dark:shadow-black/30 dark:hover:from-zinc-700 dark:hover:to-purple-900',
   secondary:
     'border border-slate-200 bg-transparent text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800',
   danger:

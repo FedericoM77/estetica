@@ -123,8 +123,8 @@ export class HandleGoogleCalendarWebhookUseCase {
     account: CalendarSyncAccount,
     event: GoogleCalendarEvent,
   ): Promise<boolean> {
-    if (event.aurumOrigin === 'AURUM') {
-      this.logger.info('google_calendar_webhook_skip_aurum_origin', {
+    if (event.glowdeskOrigin === 'GLOWDESK') {
+      this.logger.info('google_calendar_webhook_skip_glowdesk_origin', {
         accountId: account.id,
         googleEventId: event.id,
       })

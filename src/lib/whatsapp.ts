@@ -20,7 +20,7 @@ function textoConfirmacion(mensaje: ConfirmacionTurnoMensaje): string {
   const pago = mensaje.medioPago ? `\nPago: ${mensaje.medioPago}` : ''
   if (mensaje.destinatario === 'profesional') {
     return [
-      'Nuevo turno reservado en AURUM',
+      'Nuevo turno reservado en GlowDesk',
       `Paciente: ${mensaje.nombreCliente}`,
       `Tratamiento: ${mensaje.servicio}`,
       `Fecha: ${mensaje.fechaHoraLegible}`,
@@ -31,7 +31,7 @@ function textoConfirmacion(mensaje: ConfirmacionTurnoMensaje): string {
   }
 
   return [
-    `Hola ${mensaje.nombreCliente}, tu turno en AURUM fue confirmado.`,
+    `Hola ${mensaje.nombreCliente}, tu turno en GlowDesk fue confirmado.`,
     `Tratamiento: ${mensaje.servicio}`,
     `Profesional: ${mensaje.profesional}`,
     `Fecha: ${mensaje.fechaHoraLegible}`,

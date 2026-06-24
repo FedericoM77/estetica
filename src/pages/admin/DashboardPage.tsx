@@ -49,7 +49,7 @@ const hours = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '1
 
 function KpiCard({ label, value, detail }: (typeof kpis)[number]) {
   return (
-    <article className="min-w-0 rounded-xl border border-zinc-200/60 bg-white p-5 font-sans shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+    <article className="min-w-0 rounded-xl border border-zinc-200/70 bg-[#fbfaf7] p-4 font-sans shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
       <div className="flex items-start justify-between gap-3">
         <p className="min-w-0 text-sm font-medium leading-5 text-zinc-500 dark:text-zinc-400">
           {label}
@@ -67,26 +67,26 @@ function KpiCard({ label, value, detail }: (typeof kpis)[number]) {
 export function DashboardPage() {
   return (
     <section>
-      <div className="overflow-hidden rounded-xl border border-zinc-200/60 bg-zinc-50 font-sans text-zinc-900 shadow-sm transition-colors dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
-        <header className="flex flex-col gap-4 border-b border-zinc-200/60 bg-white/90 px-5 py-4 backdrop-blur md:flex-row md:items-center md:justify-between xl:pr-44 dark:border-zinc-800 dark:bg-zinc-950/80">
+      <div className="overflow-hidden rounded-xl border border-zinc-200/70 bg-[#f1eff5] font-sans text-zinc-900 shadow-sm transition-colors dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
+        <header className="flex flex-col gap-4 border-b border-zinc-200/70 bg-[#f7f6f2]/90 px-5 py-4 backdrop-blur md:flex-row md:items-center md:justify-between xl:pr-44 dark:border-zinc-800 dark:bg-zinc-950/80">
           <div>
-            <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-[#E6C687]">
-              CRM medico-premium
+            <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-amber-700 dark:text-[#E6C687]">
+              GlowDesk medico-premium
             </p>
             <h1 className="mt-2 font-display text-3xl font-medium tracking-wide text-zinc-800 dark:text-zinc-50">
-              Clinica Aura Visual & Bienestar
+              Panel operativo multitenant
             </h1>
           </div>
         </header>
 
         <div className="grid min-h-[760px] grid-cols-1 xl:grid-cols-[240px_minmax(0,1fr)_320px]">
-          <aside className="border-b border-zinc-200/60 bg-white px-4 py-5 xl:border-b-0 xl:border-r dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="mb-7 rounded-xl border border-violet-100 bg-violet-50/70 p-4 dark:border-amber-300/20 dark:bg-white/5">
+          <aside className="border-b border-zinc-200/70 bg-[#f7f6f2] px-4 py-5 xl:border-b-0 xl:border-r dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="mb-7 rounded-xl border border-amber-200/50 bg-[#f1eff5]/70 p-4 dark:border-amber-300/20 dark:bg-white/5">
               <p className="font-display text-lg font-medium uppercase tracking-widest text-zinc-800 dark:text-[#E6C687]">
-                AURUM CRM
+                GlowDesk
               </p>
               <p className="mt-1 font-sans text-xs text-zinc-500 dark:text-zinc-400">
-                Consultorio Norte
+                Tenant: clinica-aura
               </p>
             </div>
             <nav className="space-y-1" aria-label="Navegacion CRM">
@@ -96,8 +96,8 @@ export function DashboardPage() {
                   href="#"
                   className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition ${
                     index === 0
-                      ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-sm shadow-violet-500/20 dark:bg-zinc-800 dark:bg-none dark:text-[#E6C687] dark:shadow-none'
-                      : 'text-zinc-600 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100'
+                      ? 'border-l-2 border-amber-400 bg-amber-50/70 text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-[#E6C687] dark:shadow-none'
+                      : 'text-zinc-600 hover:bg-amber-50/50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100'
                   }`}
                 >
                   {item}
@@ -107,15 +107,15 @@ export function DashboardPage() {
             </nav>
           </aside>
 
-          <main className="min-w-0 bg-zinc-50 p-4 sm:p-5 dark:bg-zinc-950">
+          <main className="min-w-0 bg-[#f1eff5] p-4 sm:p-5 dark:bg-zinc-950">
             <div className="grid min-w-0 gap-4 sm:grid-cols-2 2xl:grid-cols-3">
               {kpis.map((kpi) => (
                 <KpiCard key={kpi.label} {...kpi} />
               ))}
             </div>
 
-            <section className="mt-5 rounded-xl border border-zinc-200/60 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
-              <div className="flex flex-col gap-3 border-b border-zinc-200/60 px-5 py-4 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
+            <section className="mt-5 rounded-xl border border-zinc-200/70 bg-[#fbfaf7] shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+              <div className="flex flex-col gap-3 border-b border-zinc-200/70 px-5 py-4 md:flex-row md:items-center md:justify-between dark:border-zinc-800">
                 <div>
                   <h2 className="font-display text-2xl font-medium tracking-wide text-zinc-800 dark:text-zinc-50">
                     Agenda del dia
@@ -183,9 +183,9 @@ export function DashboardPage() {
             </section>
           </main>
 
-          <aside className="border-t border-zinc-200/60 bg-white p-5 xl:border-l xl:border-t-0 dark:border-zinc-800 dark:bg-zinc-900">
-            <section className="rounded-xl border border-zinc-200/60 p-5 shadow-sm dark:border-zinc-800 dark:shadow-none">
-              <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-[#E6C687]">
+          <aside className="border-t border-zinc-200/70 bg-[#f7f6f2] p-5 xl:border-l xl:border-t-0 dark:border-zinc-800 dark:bg-zinc-900">
+            <section className="rounded-xl border border-zinc-200/70 bg-[#fbfaf7] p-5 shadow-sm dark:border-zinc-800 dark:bg-transparent dark:shadow-none">
+              <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-amber-700 dark:text-[#E6C687]">
                 Ficha rapida
               </p>
               <div className="mt-5 flex items-center gap-3">
@@ -220,7 +220,7 @@ export function DashboardPage() {
                 <p className="mt-2 text-sm">Alergias: Acido hialuronico</p>
               </div>
 
-              <button className="mt-5 w-full rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 px-4 py-3 font-sans text-sm font-semibold text-white shadow-sm shadow-violet-500/20 transition hover:from-purple-600 hover:to-violet-700 dark:bg-gradient-to-r dark:from-zinc-800 dark:to-purple-950 dark:text-[#E6C687] dark:hover:from-zinc-700 dark:hover:to-purple-900">
+              <button className="mt-5 w-full rounded-xl bg-gradient-to-r from-amber-200 to-violet-200 px-4 py-3 font-sans text-sm font-semibold text-zinc-800 shadow-sm transition hover:from-amber-300 hover:to-violet-300 dark:bg-gradient-to-r dark:from-zinc-800 dark:to-purple-950 dark:text-[#E6C687] dark:hover:from-zinc-700 dark:hover:to-purple-900">
                 Ver historia clinica
               </button>
             </section>

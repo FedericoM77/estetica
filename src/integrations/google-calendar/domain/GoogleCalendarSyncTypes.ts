@@ -2,7 +2,7 @@ export type BusinessMode = 'INDEPENDENT'
 
 export type GoogleResourceState = 'sync' | 'exists' | 'not_exists'
 
-export type SyncOrigin = 'AURUM' | 'GOOGLE'
+export type SyncOrigin = 'GLOWDESK' | 'GOOGLE'
 
 export interface GoogleCalendarWebhookHeaders {
   channelId: string
@@ -37,8 +37,8 @@ export interface GoogleCalendarEvent {
   startIso?: string
   endIso?: string
   updatedIso: string
-  aurumTurnoId?: string
-  aurumOrigin?: SyncOrigin
+  glowdeskAppointmentId?: string
+  glowdeskOrigin?: SyncOrigin
 }
 
 export interface GoogleCalendarEventsPage {

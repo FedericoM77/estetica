@@ -20,14 +20,14 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900 transition-colors dark:bg-zinc-950 dark:text-zinc-100">
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-slate-200 bg-white px-4 py-6 transition-colors md:flex dark:border-purple-950/40 dark:bg-zinc-950">
+    <div className="flex min-h-screen bg-[#f5f5f3] font-sans text-slate-900 transition-colors dark:bg-zinc-950 dark:text-zinc-100">
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-zinc-200/70 bg-[#f7f6f2] px-4 py-6 transition-colors md:flex dark:border-purple-950/40 dark:bg-zinc-950">
         <div className="px-2">
           <span className="font-display text-2xl font-medium uppercase leading-none tracking-widest text-zinc-800 dark:text-[#E6C687]">
-            AURUM
+            GlowDesk
           </span>
           <p className="mt-2 font-sans text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500 dark:text-zinc-500">
-            Administracion
+            Administracion SaaS
           </p>
           {usingMocks && (
             <span className="mt-2 inline-block rounded-full border border-violet-500/25 px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] text-violet-600 dark:border-amber-400/25 dark:text-amber-300">
@@ -69,9 +69,9 @@ export function AdminLayout() {
       </aside>
 
       <div className="flex flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
+        <header className="flex items-center justify-between border-b border-zinc-200/70 bg-[#f7f6f2] px-4 py-3 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
           <span className="font-display text-xl font-medium uppercase tracking-widest text-zinc-800 dark:text-[#E6C687]">
-            AURUM
+            GlowDesk
           </span>
           <button
             onClick={() => void salir()}
@@ -81,7 +81,7 @@ export function AdminLayout() {
           </button>
         </header>
 
-        <nav className="flex gap-1 overflow-x-auto border-b border-slate-200 bg-white px-2 py-2 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
+        <nav className="flex gap-1 overflow-x-auto border-b border-zinc-200/70 bg-[#f7f6f2] px-2 py-2 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
           {navItems.map((item) => (
             <NavLink
               key={item.to}

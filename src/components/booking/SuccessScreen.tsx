@@ -37,13 +37,13 @@ export function SuccessScreen({
 
   const calendarUrl = new URL('https://calendar.google.com/calendar/render')
   calendarUrl.searchParams.set('action', 'TEMPLATE')
-  calendarUrl.searchParams.set('text', `${servicio.nombre} — AURUM`)
+  calendarUrl.searchParams.set('text', `${servicio.nombre} - GlowDesk`)
   calendarUrl.searchParams.set(
     'dates',
     `${formatoGoogleCalendar(inicio)}/${formatoGoogleCalendar(fin)}`,
   )
-  calendarUrl.searchParams.set('details', `Turno con ${profesional.nombre} en AURUM.`)
-  calendarUrl.searchParams.set('location', 'AURUM — Av. Callao 1234, CABA')
+  calendarUrl.searchParams.set('details', `Turno con ${profesional.nombre} en GlowDesk.`)
+  calendarUrl.searchParams.set('location', 'GlowDesk - Av. Callao 1234, CABA')
 
   return (
     <div className="animate-step-in mx-auto max-w-md text-center">
