@@ -100,7 +100,7 @@ export function AdminLayout() {
           ))}
         </nav>
 
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-8 pt-20 lg:pl-4 lg:pr-52 md:pt-8">
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-8 pt-20 md:pt-8 xl:pl-4 xl:pr-52">
           <Outlet />
         </main>
       </div>

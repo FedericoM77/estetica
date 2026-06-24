@@ -49,12 +49,14 @@ const hours = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '1
 
 function KpiCard({ label, value, detail }: (typeof kpis)[number]) {
   return (
-    <article className="rounded-xl border border-zinc-200/60 bg-white p-5 font-sans shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{label}</p>
-        <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Hoy</span>
+    <article className="min-w-0 rounded-xl border border-zinc-200/60 bg-white p-5 font-sans shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+      <div className="flex items-start justify-between gap-3">
+        <p className="min-w-0 text-sm font-medium leading-5 text-zinc-500 dark:text-zinc-400">
+          {label}
+        </p>
+        <span className="shrink-0 text-xs font-medium text-zinc-500 dark:text-zinc-400">Hoy</span>
       </div>
-      <p className="mt-4 font-sans text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+      <p className="mt-4 break-words font-sans text-[clamp(1.75rem,2.8vw,2.25rem)] font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-50">
         {value}
       </p>
       <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{detail}</p>
@@ -66,7 +68,7 @@ export function DashboardPage() {
   return (
     <section>
       <div className="overflow-hidden rounded-xl border border-zinc-200/60 bg-zinc-50 font-sans text-zinc-900 shadow-sm transition-colors dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
-        <header className="flex flex-col gap-4 border-b border-zinc-200/60 bg-white/90 px-5 py-4 pr-44 backdrop-blur md:flex-row md:items-center md:justify-between dark:border-zinc-800 dark:bg-zinc-950/80">
+        <header className="flex flex-col gap-4 border-b border-zinc-200/60 bg-white/90 px-5 py-4 backdrop-blur md:flex-row md:items-center md:justify-between xl:pr-44 dark:border-zinc-800 dark:bg-zinc-950/80">
           <div>
             <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-[#E6C687]">
               CRM medico-premium
@@ -77,8 +79,8 @@ export function DashboardPage() {
           </div>
         </header>
 
-        <div className="grid min-h-[760px] grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)_320px]">
-          <aside className="border-b border-zinc-200/60 bg-white px-4 py-5 lg:border-b-0 lg:border-r dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="grid min-h-[760px] grid-cols-1 xl:grid-cols-[240px_minmax(0,1fr)_320px]">
+          <aside className="border-b border-zinc-200/60 bg-white px-4 py-5 xl:border-b-0 xl:border-r dark:border-zinc-800 dark:bg-zinc-900">
             <div className="mb-7 rounded-xl border border-violet-100 bg-violet-50/70 p-4 dark:border-amber-300/20 dark:bg-white/5">
               <p className="font-display text-lg font-medium uppercase tracking-widest text-zinc-800 dark:text-[#E6C687]">
                 AURUM CRM
@@ -105,8 +107,8 @@ export function DashboardPage() {
             </nav>
           </aside>
 
-          <main className="min-w-0 bg-zinc-50 p-5 dark:bg-zinc-950">
-            <div className="grid gap-4 md:grid-cols-3">
+          <main className="min-w-0 bg-zinc-50 p-4 sm:p-5 dark:bg-zinc-950">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2 2xl:grid-cols-3">
               {kpis.map((kpi) => (
                 <KpiCard key={kpi.label} {...kpi} />
               ))}
@@ -181,7 +183,7 @@ export function DashboardPage() {
             </section>
           </main>
 
-          <aside className="border-t border-zinc-200/60 bg-white p-5 lg:border-l lg:border-t-0 dark:border-zinc-800 dark:bg-zinc-900">
+          <aside className="border-t border-zinc-200/60 bg-white p-5 xl:border-l xl:border-t-0 dark:border-zinc-800 dark:bg-zinc-900">
             <section className="rounded-xl border border-zinc-200/60 p-5 shadow-sm dark:border-zinc-800 dark:shadow-none">
               <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-[#E6C687]">
                 Ficha rapida
