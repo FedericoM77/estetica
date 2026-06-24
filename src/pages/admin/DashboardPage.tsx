@@ -49,17 +49,17 @@ const hours = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '1
 
 function KpiCard({ label, value, detail }: (typeof kpis)[number]) {
   return (
-    <article className="min-w-0 rounded-xl border border-zinc-200/70 bg-[#fbfaf7] p-4 font-sans shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+    <article className="flex min-h-[128px] min-w-0 flex-col rounded-xl border border-zinc-200/70 bg-[#fbfaf7] p-4 font-sans shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
       <div className="flex items-start justify-between gap-3">
         <p className="min-w-0 text-sm font-medium leading-5 text-zinc-500 dark:text-zinc-400">
           {label}
         </p>
         <span className="shrink-0 text-xs font-medium text-zinc-500 dark:text-zinc-400">Hoy</span>
       </div>
-      <p className="mt-4 break-words font-sans text-[clamp(1.75rem,2.8vw,2.25rem)] font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-50">
+      <p className="mt-4 min-w-0 truncate whitespace-nowrap font-sans text-lg font-bold leading-tight tracking-tight text-zinc-900 md:text-xl dark:text-zinc-50">
         {value}
       </p>
-      <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{detail}</p>
+      <p className="mt-auto pt-2 text-sm text-zinc-500 dark:text-zinc-400">{detail}</p>
     </article>
   )
 }
@@ -68,7 +68,7 @@ export function DashboardPage() {
   return (
     <section>
       <div className="overflow-hidden rounded-xl border border-zinc-200/70 bg-[#f1eff5] font-sans text-zinc-900 shadow-sm transition-colors dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
-        <header className="flex flex-col gap-4 border-b border-zinc-200/70 bg-[#f7f6f2]/90 px-5 py-4 backdrop-blur md:flex-row md:items-center md:justify-between xl:pr-44 dark:border-zinc-800 dark:bg-zinc-950/80">
+        <header className="flex flex-col gap-4 border-b border-zinc-200/70 bg-[#f7f6f2]/90 px-5 py-4 pr-36 backdrop-blur md:flex-row md:items-center md:justify-between dark:border-zinc-800 dark:bg-zinc-950/80">
           <div>
             <p className="font-sans text-xs font-semibold uppercase tracking-[0.24em] text-amber-700 dark:text-[#E6C687]">
               GlowDesk medico-premium
@@ -108,7 +108,7 @@ export function DashboardPage() {
           </aside>
 
           <main className="min-w-0 bg-[#f1eff5] p-4 sm:p-5 dark:bg-zinc-950">
-            <div className="grid min-w-0 gap-4 sm:grid-cols-2 2xl:grid-cols-3">
+            <div className="grid min-w-0 grid-cols-[repeat(auto-fit,minmax(136px,1fr))] gap-4">
               {kpis.map((kpi) => (
                 <KpiCard key={kpi.label} {...kpi} />
               ))}
