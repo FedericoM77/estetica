@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GlowDesk - SaaS Multitenant Prototype</title>
+    <title>GlowDesk · Micro Minimal SaaS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,132 +19,115 @@
               display: ['Cormorant Garamond', 'Georgia', 'serif'],
               sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
             },
-            colors: {
-              champagne: '#D8B979',
-              linen: '#FBF7EF',
-            },
             boxShadow: {
-              soft: '0 18px 45px -34px rgba(76, 29, 149, 0.35)',
+              micro: '0 16px 42px -34px rgba(76,29,149,.32)',
             },
           },
         },
       }
     </script>
   </head>
-  <body class="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(233,213,255,.55),transparent_34%),linear-gradient(135deg,#fbf7ef_0%,#f6f3ff_48%,#f4f4f5_100%)] font-sans text-zinc-900">
-    <header class="sticky top-0 z-50 border-b border-white/60 bg-white/70 backdrop-blur-xl">
-      <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between">
+  <body class="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(233,213,255,.52),transparent_32%),linear-gradient(135deg,#fbf8f1_0%,#f7f4ff_48%,#f4f4f5_100%)] font-sans text-zinc-900 antialiased">
+    <header class="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-3 py-2 md:flex-row md:items-center md:justify-between">
         <div class="min-w-0">
-          <p class="font-display text-3xl font-medium uppercase tracking-widest text-zinc-800">
+          <p class="font-display text-2xl font-medium uppercase leading-none tracking-widest text-zinc-800">
             GlowDesk
           </p>
-          <p class="truncate text-xs font-medium uppercase tracking-[0.28em] text-amber-700/70">
-            SaaS Multitenant · Esteticas & Bienestar
+          <p class="truncate text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-700/70">
+            Barra de desarrollo · ruteo simulado
           </p>
         </div>
-        <nav class="flex flex-wrap gap-2 rounded-full border border-amber-100 bg-white/70 p-1 shadow-soft">
-          <button data-view="superadmin" class="tab-btn rounded-full px-4 py-2 text-sm font-semibold transition">
-            SuperAdmin
+        <nav class="flex flex-wrap gap-1 rounded-full border border-amber-100/80 bg-white/70 p-1 shadow-micro">
+          <button data-view="superadmin" class="tab-btn rounded-full px-3 py-1.5 text-xs font-semibold transition">
+            Vista SuperAdmin
           </button>
-          <button data-view="admin" class="tab-btn rounded-full px-4 py-2 text-sm font-semibold transition">
-            Admin Tenant
+          <button data-view="admin" class="tab-btn rounded-full px-3 py-1.5 text-xs font-semibold transition">
+            Vista Admin / Tenant
           </button>
-          <button data-view="cliente" class="tab-btn rounded-full px-4 py-2 text-sm font-semibold transition">
-            Portal Cliente
+          <button data-view="cliente" class="tab-btn rounded-full px-3 py-1.5 text-xs font-semibold transition">
+            Vista Cliente Publico
           </button>
         </nav>
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 py-8">
-      <section id="view-superadmin" class="view space-y-6">
-        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <main class="mx-auto max-w-7xl px-3 py-4">
+      <section id="view-superadmin" class="view space-y-3">
+        <div class="flex flex-wrap items-end justify-between gap-2">
           <div class="min-w-0">
-            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-700">
-              Panel global
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-700">
+              Control de negocio
             </p>
-            <h1 class="mt-2 font-display text-4xl font-medium tracking-wide text-zinc-800 md:text-5xl">
-              Control de negocio GlowDesk
+            <h1 class="mt-1 truncate font-display text-3xl font-medium tracking-wide text-zinc-800">
+              Panel SuperAdmin
             </h1>
-            <p class="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-500">
-              Monitorea tenants activos, modelos de negocio y facturacion total de la plataforma.
-            </p>
           </div>
-          <button
-            id="openModal"
-            class="w-full rounded-2xl bg-gradient-to-r from-amber-300 to-amber-600 px-5 py-3 text-sm font-bold text-white shadow-soft transition hover:-translate-y-0.5 md:w-auto"
-          >
-            Registrar Nuevo Centro Manualmente
+          <button class="rounded-full border border-amber-300/70 bg-white/60 px-3 py-1.5 text-xs font-bold text-amber-800 shadow-micro transition hover:-translate-y-px">
+            Alta Manual
           </button>
         </div>
 
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
-          <article class="min-w-0 rounded-2xl border border-white/70 bg-white/85 p-5 shadow-soft backdrop-blur">
-            <p class="truncate text-sm font-medium text-zinc-500">Total Inquilinos Activos</p>
-            <p class="mt-4 truncate text-4xl font-bold tracking-tight text-zinc-900">128</p>
-            <p class="mt-2 text-sm text-zinc-500">+14 este mes</p>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-2">
+          <article class="min-w-0 rounded-xl border border-white/70 bg-white/80 p-3 shadow-micro backdrop-blur">
+            <p class="truncate text-[11px] font-medium text-zinc-500">Inquilinos Activos</p>
+            <p class="mt-2 truncate text-xl font-bold tracking-tight text-zinc-900 md:text-2xl">142</p>
           </article>
-          <article class="min-w-0 rounded-2xl border border-white/70 bg-white/85 p-5 shadow-soft backdrop-blur">
-            <p class="truncate text-sm font-medium text-zinc-500">Distribucion de Modelos</p>
-            <div class="mt-4 space-y-3">
-              <div class="flex min-w-0 items-center justify-between gap-3">
-                <span class="truncate text-sm font-semibold text-zinc-700">CLINIC</span>
-                <span class="shrink-0 rounded-full bg-violet-50 px-3 py-1 text-sm font-bold text-violet-700">84</span>
-              </div>
-              <div class="flex min-w-0 items-center justify-between gap-3">
-                <span class="truncate text-sm font-semibold text-zinc-700">INDEPENDENT</span>
-                <span class="shrink-0 rounded-full bg-amber-50 px-3 py-1 text-sm font-bold text-amber-700">44</span>
-              </div>
-            </div>
-          </article>
-          <article class="min-w-0 rounded-2xl border border-white/70 bg-white/85 p-5 shadow-soft backdrop-blur">
-            <p class="truncate text-sm font-medium text-zinc-500">Facturacion Global Mensual (ARS)</p>
-            <p class="mt-4 truncate text-[clamp(2rem,4vw,2.75rem)] font-bold leading-tight tracking-tight text-zinc-900">
-              $14.850.000
+          <article class="min-w-0 rounded-xl border border-white/70 bg-white/80 p-3 shadow-micro backdrop-blur">
+            <p class="truncate text-[11px] font-medium text-zinc-500">Modelos</p>
+            <p class="mt-2 truncate text-xl font-bold tracking-tight text-zinc-900 md:text-2xl">
+              82 Clinicas · 60 Indep.
             </p>
-            <p class="mt-2 text-sm text-zinc-500">Comisiones y suscripciones</p>
+          </article>
+          <article class="min-w-0 rounded-xl border border-white/70 bg-white/80 p-3 shadow-micro backdrop-blur">
+            <p class="truncate text-[11px] font-medium text-zinc-500">Facturacion Global</p>
+            <p class="mt-2 min-w-0 truncate text-xl font-bold tracking-tight text-zinc-900 md:text-2xl">
+              $24.890.000
+            </p>
           </article>
         </div>
 
-        <section class="overflow-hidden rounded-2xl border border-white/70 bg-white/85 shadow-soft backdrop-blur">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 px-5 py-4">
-            <h2 class="font-display text-2xl font-medium tracking-wide text-zinc-800">Gestion de Tenants</h2>
-            <span class="rounded-full border border-amber-200 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-700">
-              Ultimos registros
+        <section class="overflow-hidden rounded-xl border border-white/70 bg-white/85 shadow-micro backdrop-blur">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100 px-3 py-2">
+            <h2 class="font-display text-xl font-medium tracking-wide text-zinc-800">
+              Gestion compacta de centros
+            </h2>
+            <span class="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+              glowdesk.com.ar/:tenant_slug
             </span>
           </div>
           <div class="overflow-x-auto">
-            <table class="min-w-full text-left text-sm">
-              <thead class="bg-zinc-50/80 text-xs uppercase tracking-wider text-zinc-400">
+            <table class="min-w-full text-left text-xs">
+              <thead class="bg-zinc-50/80 text-[10px] uppercase tracking-wider text-zinc-400">
                 <tr>
-                  <th class="px-5 py-3 font-semibold">Nombre</th>
-                  <th class="px-5 py-3 font-semibold">URL</th>
-                  <th class="px-5 py-3 font-semibold">Tipo</th>
-                  <th class="px-5 py-3 font-semibold">Estado</th>
-                  <th class="px-5 py-3 font-semibold">Accion</th>
+                  <th class="px-3 py-2 font-bold">Centro</th>
+                  <th class="px-3 py-2 font-bold">URL</th>
+                  <th class="px-3 py-2 font-bold">Tipo</th>
+                  <th class="px-3 py-2 font-bold">Estado</th>
+                  <th class="px-3 py-2 font-bold">Accion</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-zinc-100">
                 <tr>
-                  <td class="max-w-56 truncate px-5 py-4 font-semibold text-zinc-800">Clinica Aura Visual</td>
-                  <td class="max-w-72 truncate px-5 py-4 text-zinc-500">glowdesk.com.ar/clinica-aura</td>
-                  <td class="px-5 py-4">CLINIC</td>
-                  <td class="px-5 py-4"><span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">Activo</span></td>
-                  <td class="px-5 py-4"><button class="rounded-full border border-rose-200 px-3 py-1 text-xs font-bold text-rose-600">Suspender</button></td>
+                  <td class="max-w-48 truncate px-3 py-2 font-bold text-zinc-800">Dra. Rios Studio</td>
+                  <td class="max-w-64 truncate px-3 py-2 text-zinc-500">glowdesk.com.ar/dra-rios</td>
+                  <td class="px-3 py-2 text-zinc-600">INDEPENDENT</td>
+                  <td class="px-3 py-2"><span class="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">Activo</span></td>
+                  <td class="px-3 py-2"><button class="rounded-full border border-rose-200 px-2 py-0.5 text-[10px] font-bold text-rose-600">Susp.</button></td>
                 </tr>
                 <tr>
-                  <td class="max-w-56 truncate px-5 py-4 font-semibold text-zinc-800">Studio Bruma</td>
-                  <td class="max-w-72 truncate px-5 py-4 text-zinc-500">glowdesk.com.ar/studio-bruma</td>
-                  <td class="px-5 py-4">INDEPENDENT</td>
-                  <td class="px-5 py-4"><span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">Activo</span></td>
-                  <td class="px-5 py-4"><button class="rounded-full border border-rose-200 px-3 py-1 text-xs font-bold text-rose-600">Suspender</button></td>
+                  <td class="max-w-48 truncate px-3 py-2 font-bold text-zinc-800">Clinica Aura</td>
+                  <td class="max-w-64 truncate px-3 py-2 text-zinc-500">glowdesk.com.ar/clinica-aura</td>
+                  <td class="px-3 py-2 text-zinc-600">CLINIC</td>
+                  <td class="px-3 py-2"><span class="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">Activo</span></td>
+                  <td class="px-3 py-2"><button class="rounded-full border border-rose-200 px-2 py-0.5 text-[10px] font-bold text-rose-600">Susp.</button></td>
                 </tr>
                 <tr>
-                  <td class="max-w-56 truncate px-5 py-4 font-semibold text-zinc-800">Lirio Spa Medico</td>
-                  <td class="max-w-72 truncate px-5 py-4 text-zinc-500">glowdesk.com.ar/lirio-spa</td>
-                  <td class="px-5 py-4">CLINIC</td>
-                  <td class="px-5 py-4"><span class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-bold text-zinc-500">Inactivo</span></td>
-                  <td class="px-5 py-4"><button class="rounded-full border border-emerald-200 px-3 py-1 text-xs font-bold text-emerald-700">Activar</button></td>
+                  <td class="max-w-48 truncate px-3 py-2 font-bold text-zinc-800">Lirio Spa Medico</td>
+                  <td class="max-w-64 truncate px-3 py-2 text-zinc-500">glowdesk.com.ar/lirio-spa</td>
+                  <td class="px-3 py-2 text-zinc-600">CLINIC</td>
+                  <td class="px-3 py-2"><span class="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-bold text-zinc-500">Inactivo</span></td>
+                  <td class="px-3 py-2"><button class="rounded-full border border-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-700">Act.</button></td>
                 </tr>
               </tbody>
             </table>
@@ -153,150 +136,148 @@
       </section>
 
       <section id="view-admin" class="view hidden">
-        <div class="overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-soft backdrop-blur">
-          <header class="border-b border-zinc-100 px-5 py-5">
-            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-700">Dashboard operativo</p>
-            <h1 class="mt-2 font-display text-4xl font-medium tracking-wide text-zinc-800">Clinica Aura Visual</h1>
-          </header>
-          <div class="grid min-h-[760px] grid-cols-1 xl:grid-cols-[240px_minmax(0,1fr)_320px]">
-            <aside class="border-b border-zinc-100 bg-white/70 p-5 xl:border-b-0 xl:border-r">
-              <p class="font-display text-xl font-medium uppercase tracking-widest text-zinc-800">GlowDesk</p>
-              <nav class="mt-8 space-y-2">
-                <a class="flex items-center justify-between rounded-2xl bg-gradient-to-r from-amber-300 to-amber-600 px-4 py-3 text-sm font-bold text-white shadow-soft" href="#">Agenda <span class="h-2 w-2 rounded-full bg-white"></span></a>
-                <a class="block rounded-2xl px-4 py-3 text-sm font-medium text-zinc-500 hover:bg-violet-50" href="#">Clientes</a>
-                <a class="block rounded-2xl px-4 py-3 text-sm font-medium text-zinc-500 hover:bg-violet-50" href="#">Tratamientos</a>
-                <a class="block rounded-2xl px-4 py-3 text-sm font-medium text-zinc-500 hover:bg-violet-50" href="#">Caja/Ventas</a>
-                <a class="block rounded-2xl px-4 py-3 text-sm font-medium text-zinc-500 hover:bg-violet-50" href="#">Configuracion</a>
-              </nav>
-            </aside>
-            <section class="min-w-0 bg-zinc-50/70 p-5">
-              <div class="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-4">
-                <article class="min-w-0 rounded-2xl bg-white p-5 shadow-sm">
-                  <p class="truncate text-sm text-zinc-500">Turnos de hoy</p>
-                  <p class="mt-3 truncate text-3xl font-bold tracking-tight">28</p>
-                </article>
-                <article class="min-w-0 rounded-2xl bg-white p-5 shadow-sm">
-                  <p class="truncate text-sm text-zinc-500">Ingresos del dia</p>
-                  <p class="mt-3 truncate text-3xl font-bold tracking-tight">$842.000</p>
-                </article>
-                <article class="min-w-0 rounded-2xl bg-white p-5 shadow-sm">
-                  <p class="truncate text-sm text-zinc-500">Pacientes nuevos</p>
-                  <p class="mt-3 truncate text-3xl font-bold tracking-tight">6</p>
-                </article>
-              </div>
+        <div class="grid min-h-[680px] overflow-hidden rounded-xl border border-white/70 bg-white/80 shadow-micro backdrop-blur xl:grid-cols-[180px_minmax(0,1fr)_260px]">
+          <aside class="border-b border-zinc-100 bg-white/70 p-3 xl:border-b-0 xl:border-r">
+            <p class="font-display text-xl font-medium uppercase tracking-widest text-zinc-800">GD</p>
+            <p class="mt-1 truncate text-[10px] font-bold uppercase tracking-wider text-amber-700">Clinica Aura</p>
+            <nav class="mt-5 space-y-1 text-xs">
+              <a class="flex items-center gap-2 rounded-lg border-l-2 border-amber-400 bg-amber-50/50 px-2 py-2 font-bold text-zinc-900" href="#">Agenda</a>
+              <a class="block rounded-lg px-2 py-2 font-medium text-zinc-500 hover:bg-violet-50" href="#">Clientes</a>
+              <a class="block rounded-lg px-2 py-2 font-medium text-zinc-500 hover:bg-violet-50" href="#">Tratamientos</a>
+              <a class="block rounded-lg px-2 py-2 font-medium text-zinc-500 hover:bg-violet-50" href="#">Caja</a>
+            </nav>
+          </aside>
 
-              <section class="mt-5 overflow-hidden rounded-2xl bg-white shadow-sm">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 px-5 py-4">
-                  <div class="min-w-0">
-                    <h2 class="font-display text-3xl font-medium tracking-wide text-zinc-800">Agenda del dia</h2>
-                    <p class="text-sm text-zinc-500">Box controlado por recurso fisico</p>
-                  </div>
-                  <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">Hoy</span>
+          <section class="min-w-0 bg-zinc-50/70 p-3">
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2">
+              <article class="min-w-0 rounded-xl bg-white p-3 shadow-sm">
+                <p class="truncate text-[11px] text-zinc-500">Turnos</p>
+                <p class="mt-1 truncate text-xl font-bold tracking-tight md:text-2xl">28</p>
+              </article>
+              <article class="min-w-0 rounded-xl bg-white p-3 shadow-sm">
+                <p class="truncate text-[11px] text-zinc-500">Ingresos</p>
+                <p class="mt-1 min-w-0 truncate text-xl font-bold tracking-tight md:text-2xl">$842.000</p>
+              </article>
+              <article class="min-w-0 rounded-xl bg-white p-3 shadow-sm">
+                <p class="truncate text-[11px] text-zinc-500">Nuevos</p>
+                <p class="mt-1 truncate text-xl font-bold tracking-tight md:text-2xl">6</p>
+              </article>
+            </div>
+
+            <section class="mt-3 overflow-hidden rounded-xl bg-white shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100 px-3 py-2">
+                <div class="min-w-0">
+                  <h1 class="truncate font-display text-2xl font-medium tracking-wide text-zinc-800">Agenda</h1>
+                  <p class="truncate text-[11px] text-zinc-500">Hoy · Boxes sincronizados</p>
                 </div>
-                <div class="grid grid-cols-[72px_minmax(0,1fr)]">
-                  <div class="border-r border-zinc-100 text-xs font-semibold tracking-wider text-zinc-400">
-                    <div class="h-28 border-b border-zinc-100 p-4">09:00</div>
-                    <div class="h-28 border-b border-zinc-100 p-4">10:30</div>
-                    <div class="h-28 border-b border-zinc-100 p-4">12:00</div>
-                  </div>
-                  <div class="space-y-3 p-4">
-                    <article class="min-w-0 rounded-2xl border border-sky-200 bg-sky-50/80 p-4">
-                      <div class="flex flex-wrap justify-between gap-3">
-                        <div class="min-w-0">
-                          <p class="text-xs font-bold uppercase tracking-wider text-sky-700">09:00 · Box 1</p>
-                          <h3 class="mt-1 truncate font-bold text-zinc-900">Valeria Mendez</h3>
-                          <p class="truncate text-sm text-zinc-600">Limpieza Facial Profunda</p>
-                        </div>
-                        <span class="h-fit rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-sky-700">Confirmado</span>
-                      </div>
-                    </article>
-                    <article class="min-w-0 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4">
-                      <div class="flex flex-wrap justify-between gap-3">
-                        <div class="min-w-0">
-                          <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">10:30 · Box 2</p>
-                          <h3 class="mt-1 truncate font-bold text-zinc-900">Martina Soler</h3>
-                          <p class="truncate text-sm text-zinc-600">Dermapen + Serum</p>
-                        </div>
-                        <span class="h-fit rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-emerald-700">En tratamiento</span>
-                      </div>
-                    </article>
-                    <article class="min-w-0 rounded-2xl border border-amber-200 bg-amber-50/80 p-4">
-                      <div class="flex flex-wrap justify-between gap-3">
-                        <div class="min-w-0">
-                          <p class="text-xs font-bold uppercase tracking-wider text-amber-700">12:00 · Box 1</p>
-                          <h3 class="mt-1 truncate font-bold text-zinc-900">Lucia Medina</h3>
-                          <p class="truncate text-sm text-zinc-600">Toxina Botulinica</p>
-                        </div>
-                        <span class="h-fit rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-amber-700">Pago pendiente</span>
-                      </div>
-                    </article>
-                  </div>
+                <span class="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-700">3 activos</span>
+              </div>
+              <div class="grid grid-cols-[52px_minmax(0,1fr)]">
+                <div class="border-r border-zinc-100 text-[10px] font-bold tracking-wider text-zinc-400">
+                  <div class="h-20 border-b border-zinc-100 p-2">09:00</div>
+                  <div class="h-20 border-b border-zinc-100 p-2">10:30</div>
+                  <div class="h-20 border-b border-zinc-100 p-2">12:00</div>
                 </div>
-              </section>
+                <div class="space-y-2 p-2">
+                  <article class="min-w-0 rounded-xl border border-sky-200 bg-sky-50/75 p-3">
+                    <div class="flex flex-wrap items-start justify-between gap-2">
+                      <div class="min-w-0">
+                        <p class="truncate text-xs font-bold text-zinc-900">Valeria Mendez</p>
+                        <p class="truncate text-[11px] text-zinc-600">Limpieza Facial</p>
+                      </div>
+                      <span class="shrink-0 rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-bold text-sky-700">Box 2</span>
+                    </div>
+                  </article>
+                  <article class="min-w-0 rounded-xl border border-emerald-200 bg-emerald-50/75 p-3">
+                    <div class="flex flex-wrap items-start justify-between gap-2">
+                      <div class="min-w-0">
+                        <p class="truncate text-xs font-bold text-zinc-900">Martina Soler</p>
+                        <p class="truncate text-[11px] text-zinc-600">Dermapen + Serum</p>
+                      </div>
+                      <span class="shrink-0 rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-bold text-emerald-700">Box 1</span>
+                    </div>
+                  </article>
+                  <article class="min-w-0 rounded-xl border border-amber-200 bg-amber-50/75 p-3">
+                    <div class="flex flex-wrap items-start justify-between gap-2">
+                      <div class="min-w-0">
+                        <p class="truncate text-xs font-bold text-zinc-900">Lucia Medina</p>
+                        <p class="truncate text-[11px] text-zinc-600">Toxina Botulinica</p>
+                      </div>
+                      <span class="shrink-0 rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-bold text-amber-700">Box 2</span>
+                    </div>
+                  </article>
+                </div>
+              </div>
             </section>
-            <aside class="border-t border-zinc-100 bg-white/70 p-5 xl:border-l xl:border-t-0">
-              <section class="rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm">
-                <p class="text-xs font-bold uppercase tracking-[0.28em] text-amber-700">Ficha rapida</p>
-                <div class="mt-5 flex items-center gap-3">
-                  <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-purple-600 text-sm font-bold text-white">VM</div>
-                  <div class="min-w-0">
-                    <h2 class="truncate font-bold text-zinc-900">Valeria Mendez</h2>
-                    <p class="text-sm text-zinc-500">Paciente activa</p>
-                  </div>
-                </div>
-                <div class="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-700">
-                  <p class="text-xs font-bold uppercase tracking-wider">Alerta medica</p>
-                  <p class="mt-2 text-sm">Alergias: Acido hialuronico</p>
-                </div>
-                <div class="mt-5 rounded-2xl bg-zinc-50 p-4">
-                  <p class="text-xs font-bold uppercase tracking-wider text-zinc-400">Notas</p>
-                  <p class="mt-2 text-sm text-zinc-600">Prefiere turnos por la manana. Seguimiento post tratamiento en 15 dias.</p>
-                </div>
-              </section>
-            </aside>
-          </div>
+          </section>
+
+          <aside class="border-t border-zinc-100 bg-white/70 p-3 xl:border-l xl:border-t-0">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-700">Ficha rapida</p>
+            <div class="mt-3 flex items-center gap-2">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-purple-600 text-xs font-bold text-white">VM</div>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-bold text-zinc-900">Valeria Mendez</p>
+                <p class="truncate text-[11px] text-zinc-500">Paciente activa</p>
+              </div>
+            </div>
+            <div class="mt-3 rounded-xl border border-rose-100 bg-rose-50/60 p-3 text-rose-700">
+              <p class="text-[10px] font-bold uppercase tracking-wider">Alerta</p>
+              <p class="mt-1 text-xs">Alergias: Acido hialuronico</p>
+            </div>
+            <p class="mt-3 rounded-xl bg-zinc-50 p-3 text-xs leading-relaxed text-zinc-500">
+              Seguimiento post tratamiento en 15 dias. Prefiere turno matutino.
+            </p>
+            <button class="mt-3 w-full rounded-xl bg-gradient-to-r from-violet-200 to-amber-200 px-3 py-2 text-xs font-bold text-zinc-800 shadow-sm">
+              Cobrar
+            </button>
+          </aside>
         </div>
       </section>
 
       <section id="view-cliente" class="view hidden">
-        <div class="mx-auto max-w-5xl">
+        <div class="mx-auto max-w-5xl rounded-[1.5rem] border border-white/70 bg-white/35 p-4 shadow-micro backdrop-blur">
           <header class="text-center">
-            <p class="font-display text-5xl font-medium uppercase tracking-widest text-amber-700">Aura</p>
-            <p class="mt-2 text-xs font-semibold uppercase tracking-[0.34em] text-zinc-500">Respira, elegi tu momento de bienestar</p>
+            <p class="font-display text-4xl font-medium uppercase tracking-widest text-amber-700">Clinica Aura</p>
+            <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+              Elegi calma, reserva simple
+            </p>
           </header>
-          <ol class="my-10 flex flex-wrap items-center justify-center gap-3">
-            <li class="flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-600 text-xs font-bold text-white">1</span><span class="text-sm font-semibold text-zinc-800">Servicio</span></li>
+          <ol class="my-5 flex flex-wrap items-center justify-center gap-2">
+            <li class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span><span class="text-xs font-bold text-zinc-800">1 Servicio</span></li>
             <li class="h-px w-8 bg-amber-200"></li>
-            <li class="flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-full border border-amber-100 bg-white/50 text-xs font-bold text-zinc-400">2</span><span class="text-sm font-medium text-zinc-400">Profesional</span></li>
-            <li class="h-px w-8 bg-amber-100"></li>
-            <li class="flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-full border border-amber-100 bg-white/50 text-xs font-bold text-zinc-400">3</span><span class="text-sm font-medium text-zinc-400">Fecha y hora</span></li>
-            <li class="h-px w-8 bg-amber-100"></li>
-            <li class="flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-full border border-amber-100 bg-white/50 text-xs font-bold text-zinc-400">4</span><span class="text-sm font-medium text-zinc-400">Confirmacion</span></li>
+            <li class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-zinc-300"></span><span class="text-xs font-medium text-zinc-400">2 Profesional</span></li>
+            <li class="h-px w-8 bg-zinc-200"></li>
+            <li class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-zinc-300"></span><span class="text-xs font-medium text-zinc-400">3 Fecha</span></li>
+            <li class="h-px w-8 bg-zinc-200"></li>
+            <li class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-zinc-300"></span><span class="text-xs font-medium text-zinc-400">4 Listo</span></li>
           </ol>
-
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
-            <article class="min-w-0 cursor-pointer rounded-2xl border border-white/70 bg-white/80 p-5 shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
-              <h3 class="truncate text-base font-bold text-zinc-800">Limpieza Facial Profunda</h3>
-              <p class="mt-2 text-sm leading-relaxed text-zinc-500">Higiene profunda, extracciones suaves y mascara calmante.</p>
-              <div class="mt-6 flex items-baseline justify-between gap-4">
-                <span class="truncate text-sm font-semibold text-amber-700/80">desde $40.000</span>
-                <span class="shrink-0 text-xs font-bold uppercase tracking-wider text-zinc-400">90 MIN</span>
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-2">
+            <article class="min-w-0 cursor-pointer rounded-xl border border-white/70 bg-white/70 p-3 shadow-micro backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
+              <h3 class="truncate text-sm font-bold text-zinc-800">Corte</h3>
+              <div class="mt-5 flex items-baseline justify-between gap-3">
+                <span class="truncate text-xs font-semibold text-amber-700/80">desde $20.000</span>
+                <span class="shrink-0 text-[10px] font-bold uppercase tracking-wider text-zinc-400">45 MIN</span>
               </div>
             </article>
-            <article class="min-w-0 cursor-pointer rounded-2xl border border-white/70 bg-white/80 p-5 shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
-              <h3 class="truncate text-base font-bold text-zinc-800">Dermapen</h3>
-              <p class="mt-2 text-sm leading-relaxed text-zinc-500">Tratamiento regenerativo para textura, luminosidad y firmeza.</p>
-              <div class="mt-6 flex items-baseline justify-between gap-4">
-                <span class="truncate text-sm font-semibold text-amber-700/80">desde $55.000</span>
-                <span class="shrink-0 text-xs font-bold uppercase tracking-wider text-zinc-400">60 MIN</span>
+            <article class="min-w-0 cursor-pointer rounded-xl border border-white/70 bg-white/70 p-3 shadow-micro backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
+              <h3 class="truncate text-sm font-bold text-zinc-800">Limpieza Facial Profunda</h3>
+              <div class="mt-5 flex items-baseline justify-between gap-3">
+                <span class="truncate text-xs font-semibold text-amber-700/80">desde $40.000</span>
+                <span class="shrink-0 text-[10px] font-bold uppercase tracking-wider text-zinc-400">90 MIN</span>
               </div>
             </article>
-            <article class="min-w-0 cursor-pointer rounded-2xl border border-white/70 bg-white/80 p-5 shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
-              <h3 class="truncate text-base font-bold text-zinc-800">Peeling Glow</h3>
-              <p class="mt-2 text-sm leading-relaxed text-zinc-500">Renovacion luminosa con protocolo personalizado.</p>
-              <div class="mt-6 flex items-baseline justify-between gap-4">
-                <span class="truncate text-sm font-semibold text-amber-700/80">$45.000</span>
-                <span class="shrink-0 text-xs font-bold uppercase tracking-wider text-zinc-400">45 MIN</span>
+            <article class="min-w-0 cursor-pointer rounded-xl border border-white/70 bg-white/70 p-3 shadow-micro backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
+              <h3 class="truncate text-sm font-bold text-zinc-800">Dermapen</h3>
+              <div class="mt-5 flex items-baseline justify-between gap-3">
+                <span class="truncate text-xs font-semibold text-amber-700/80">desde $55.000</span>
+                <span class="shrink-0 text-[10px] font-bold uppercase tracking-wider text-zinc-400">60 MIN</span>
+              </div>
+            </article>
+            <article class="min-w-0 cursor-pointer rounded-xl border border-white/70 bg-white/70 p-3 shadow-micro backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200">
+              <h3 class="truncate text-sm font-bold text-zinc-800">Peeling Glow</h3>
+              <div class="mt-5 flex items-baseline justify-between gap-3">
+                <span class="truncate text-xs font-semibold text-amber-700/80">$45.000</span>
+                <span class="shrink-0 text-[10px] font-bold uppercase tracking-wider text-zinc-400">45 MIN</span>
               </div>
             </article>
           </div>
@@ -304,52 +285,24 @@
       </section>
     </main>
 
-    <div id="modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-zinc-950/40 p-4 backdrop-blur-sm">
-      <form class="w-full max-w-lg rounded-3xl border border-white/70 bg-white p-6 shadow-soft">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-[0.28em] text-amber-700">Nuevo tenant</p>
-            <h2 class="mt-2 font-display text-3xl font-medium text-zinc-800">Registrar centro</h2>
-          </div>
-          <button type="button" id="closeModal" class="rounded-full border border-zinc-200 px-3 py-1 text-sm font-bold text-zinc-500">Cerrar</button>
-        </div>
-        <div class="mt-6 grid gap-4">
-          <label class="grid gap-1 text-sm font-semibold text-zinc-700">Nombre Comercial <input class="rounded-2xl border border-zinc-200 px-4 py-3 font-medium outline-none focus:border-amber-300" placeholder="Clinica Aura Visual" /></label>
-          <label class="grid gap-1 text-sm font-semibold text-zinc-700">Email del Administrador <input class="rounded-2xl border border-zinc-200 px-4 py-3 font-medium outline-none focus:border-amber-300" placeholder="admin@clinica.com" /></label>
-          <label class="grid gap-1 text-sm font-semibold text-zinc-700">Tipo de Negocio <select class="rounded-2xl border border-zinc-200 px-4 py-3 font-medium outline-none focus:border-amber-300"><option>CLINIC</option><option>INDEPENDENT</option></select></label>
-        </div>
-        <button type="button" class="mt-6 w-full rounded-2xl bg-gradient-to-r from-amber-300 to-amber-600 px-5 py-3 text-sm font-bold text-white shadow-soft">Crear tenant</button>
-      </form>
-    </div>
-
     <script>
-      const buttons = document.querySelectorAll('.tab-btn')
+      const tabs = document.querySelectorAll('.tab-btn')
       const views = document.querySelectorAll('.view')
 
-      function activate(view) {
-        views.forEach((node) => node.classList.toggle('hidden', node.id !== `view-${view}`))
-        buttons.forEach((button) => {
-          const active = button.dataset.view === view
-          button.className =
-            'tab-btn rounded-full px-4 py-2 text-sm font-semibold transition ' +
+      function activate(viewName) {
+        views.forEach((view) => view.classList.toggle('hidden', view.id !== `view-${viewName}`))
+        tabs.forEach((tab) => {
+          const active = tab.dataset.view === viewName
+          tab.className =
+            'tab-btn rounded-full px-3 py-1.5 text-xs font-semibold transition ' +
             (active
               ? 'bg-gradient-to-r from-amber-300 to-amber-600 text-white shadow-sm'
               : 'text-zinc-500 hover:bg-violet-50 hover:text-zinc-800')
         })
       }
 
-      buttons.forEach((button) => button.addEventListener('click', () => activate(button.dataset.view)))
+      tabs.forEach((tab) => tab.addEventListener('click', () => activate(tab.dataset.view)))
       activate('superadmin')
-
-      const modal = document.getElementById('modal')
-      document.getElementById('openModal').addEventListener('click', () => {
-        modal.classList.remove('hidden')
-        modal.classList.add('flex')
-      })
-      document.getElementById('closeModal').addEventListener('click', () => {
-        modal.classList.add('hidden')
-        modal.classList.remove('flex')
-      })
     </script>
   </body>
 </html>
