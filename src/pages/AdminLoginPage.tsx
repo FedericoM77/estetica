@@ -6,6 +6,10 @@ import { Input } from '../components/ui/Input'
 import { useAuth } from '../hooks/useAuth'
 import { AuthError } from '../lib/auth'
 
+function tieneAccesoAdmin(rol: string): boolean {
+  return rol === 'ADMIN' || rol === 'SUPER_ADMIN'
+}
+
 export function AdminLoginPage() {
   const { usuario, isLoadingAuth, iniciarSesion, cerrarSesion } = useAuth()
   const navigate = useNavigate()
@@ -15,7 +19,7 @@ export function AdminLoginPage() {
   const [enviando, setEnviando] = useState(false)
 
   // Si ya hay un admin logueado, entrar directo al panel.
-  if (!isLoadingAuth && usuario?.rol === 'ADMIN') {
+  if (!isLoadingAuth && usuario && tieneAccesoAdmin(usuario.rol)) {
     return <Navigate to="/admin" replace />
   }
 
@@ -25,7 +29,7 @@ export function AdminLoginPage() {
     setEnviando(true)
     try {
       const u = await iniciarSesion({ email, password })
-      if (u.rol !== 'ADMIN') {
+      if (!tieneAccesoAdmin(u.rol)) {
         // No es un admin: cerramos la sesión para no dejarlo a medias.
         await cerrarSesion()
         setError('Esta cuenta no tiene acceso al panel de administración.')

@@ -22,7 +22,7 @@ export function IngresarPage() {
 
   // Si ya hay sesión, redirigir según el rol.
   if (!isLoadingAuth && usuario) {
-    return <Navigate to={usuario.rol === 'ADMIN' ? '/admin' : '/'} replace />
+    return <Navigate to={usuario.rol === 'ADMIN' || usuario.rol === 'SUPER_ADMIN' ? '/admin' : '/'} replace />
   }
 
   function validar(): string | null {

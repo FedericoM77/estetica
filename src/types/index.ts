@@ -92,7 +92,7 @@ export type MedioPagoReserva = 'LOCAL' | 'TRANSFERENCIA' | 'MERCADO_PAGO'
 
 // ── Auth / Roles ──────────────────────────────────────────────
 
-export type Rol = 'ADMIN' | 'CLIENTE'
+export type Rol = 'ADMIN' | 'SUPER_ADMIN' | 'CLIENTE'
 
 /** Usuario autenticado, ya resuelto con su rol y (si paciente) su cliente_id. */
 export interface Usuario {

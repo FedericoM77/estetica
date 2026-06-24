@@ -10,6 +10,14 @@ import { addDays, set } from 'date-fns'
 import type { Cliente, Profesional, Rol, Servicio, Sucursal, Turno } from '../../types'
 
 const STORAGE_KEY = 'aurum-demo-db-v3'
+const SUPER_ADMIN_DEMO: MockUsuario = {
+  id: '00000000-ssss-0000-0000-000000000001',
+  email: 'Alerod@demo.com',
+  password: '1234',
+  rol: 'SUPER_ADMIN',
+  nombre: 'Alerod SuperAdmin',
+  clienteId: null,
+}
 const TELEFONOS_PROFESIONALES_DEMO: Record<string, string> = {
   'c0000000-0000-0000-0000-000000000001': '+5491155553001',
   'c0000000-0000-0000-0000-000000000002': '+5491155553002',
@@ -182,6 +190,7 @@ function seedInicial(): MockDb {
   ]
 
   const usuarios: MockUsuario[] = [
+    SUPER_ADMIN_DEMO,
     {
       id: '00000000-aaaa-0000-0000-000000000001',
       email: 'admin@demo.com',
@@ -226,6 +235,10 @@ export function leerDb(): MockDb {
       const cantidadTurnos = db.turnos.length
       db.turnos = db.turnos.filter((turno) => turno.id !== 'e0000000-0000-0000-0000-000000000003')
       if (db.turnos.length !== cantidadTurnos) cambio = true
+      if (!db.usuarios.some((usuario) => usuario.email.toLowerCase() === SUPER_ADMIN_DEMO.email.toLowerCase())) {
+        db.usuarios.unshift(SUPER_ADMIN_DEMO)
+        cambio = true
+      }
       if (cambio) guardarDb(db)
       return db
     }

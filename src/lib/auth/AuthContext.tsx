@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       usuario,
       isLoadingAuth,
-      esAdmin: usuario?.rol === 'ADMIN',
+      esAdmin: usuario?.rol === 'ADMIN' || usuario?.rol === 'SUPER_ADMIN',
       iniciarSesion,
       registrarPaciente,
       cerrarSesion,
