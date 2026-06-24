@@ -122,6 +122,28 @@ Esto evita confiar en `tenantId` recibido por query/body/path desde el cliente.
 
 Para `glowdesk.com.ar/:tenant_slug`, resolver el tenant con un `TenantBySlugRepository` antes de mostrar catalogo/reserva publica. Esa ruta no debe aceptar `tenantId` arbitrario desde el cliente: el `tenantId` se deriva exclusivamente del `tenantSlug` validado.
 
+Contrato implementado:
+
+- `GetClientPortalUseCase`: valida slug, busca tenant activo y carga servicios activos del tenant.
+- `ClientPortalController.show`: devuelve `view: "client-portal"` y el modelo `{ tenant, services }`.
+
+Adaptador Express/Prisma sugerido:
+
+```ts
+app.get('/:tenant_slug', async (req, res) => {
+  const response = await clientPortalController.show({
+    headers: req.headers,
+    params: { tenant_slug: req.params.tenant_slug },
+    query: req.query,
+  })
+
+  if (response.status === 404) return res.status(404).render('404-not-found')
+  if (response.status !== 200) return res.status(response.status).json(response.body)
+
+  return res.render(response.body.view, response.body.model)
+})
+```
+
 ## OWASP / seguridad
 
 - Password hashing por puerto `PasswordHasher`: usar Argon2id o bcrypt con costo alto.
