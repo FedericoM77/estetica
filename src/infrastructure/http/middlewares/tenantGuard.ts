@@ -22,7 +22,7 @@ export function createTenantGuard(jwtVerifier: JwtVerifier): HttpMiddleware {
 
       if (claims.role === 'SUPER_ADMIN') {
         request.auth = {
-          id: claims.sub,
+          id: claims.userId,
           email: claims.email,
           role: claims.role,
         }
@@ -33,20 +33,21 @@ export function createTenantGuard(jwtVerifier: JwtVerifier): HttpMiddleware {
         return json(403, { error: 'FORBIDDEN_ROLE' })
       }
 
-      if (!claims.tenant_id) {
+      if (!claims.tenantId) {
         return json(403, { error: 'TENANT_REQUIRED' })
       }
 
       request.auth = {
-        id: claims.sub,
+        id: claims.userId,
         email: claims.email,
         role: claims.role,
-        tenantId: claims.tenant_id,
+        tenantId: claims.tenantId,
+        tenantSlug: claims.tenantSlug,
       }
 
       request.query = {
         ...request.query,
-        tenantId: claims.tenant_id,
+        tenantId: claims.tenantId,
       }
 
       return next()

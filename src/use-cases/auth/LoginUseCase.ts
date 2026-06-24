@@ -38,15 +38,17 @@ function toPrincipal(user: UserAccount): AuthenticatedPrincipal {
     email: user.email,
     role: user.role,
     tenantId: user.tenantId,
+    tenantSlug: user.tenantSlug,
   }
 }
 
 function toJwtClaims(user: UserAccount): JwtClaims {
   return {
-    sub: user.id,
+    userId: user.id,
     email: user.email,
     role: user.role,
-    tenant_id: user.tenantId,
+    tenantId: user.tenantId,
+    tenantSlug: user.tenantSlug,
   }
 }
 
@@ -87,7 +89,10 @@ export class LoginUseCase {
     return {
       access_token: token,
       token_type: 'Bearer',
-      redirect_to: user.role === 'SUPER_ADMIN' ? '/admin/super-dashboard' : '/admin/dashboard',
+      redirect_to:
+        user.role === 'SUPER_ADMIN'
+          ? '/admin/super-dashboard'
+          : `/${user.tenantSlug ?? 'admin'}/admin/dashboard`,
       user: toPrincipal(user),
     }
   }

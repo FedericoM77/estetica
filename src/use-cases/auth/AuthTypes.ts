@@ -7,20 +7,26 @@ export interface AuthenticatedPrincipal {
   email: string
   role: PlatformRole
   tenantId?: string
+  tenantSlug?: string
 }
 
-export interface JwtClaims {
-  sub: string
+// Estructura del payload del token de GlowDesk que alimenta vistas y guards.
+export interface GlowDeskTokenPayload {
+  userId: string
   email: string
   role: PlatformRole
-  tenant_id?: string
+  tenantId?: string
+  tenantSlug?: string
 }
+
+export type JwtClaims = GlowDeskTokenPayload
 
 export interface UserAccount {
   id: string
   email: string
   role: PlatformRole
   tenantId?: string
+  tenantSlug?: string
   passwordHash: string
   active: boolean
 }
@@ -33,7 +39,7 @@ export interface LoginInput {
 export interface LoginResult {
   access_token: string
   token_type: 'Bearer'
-  redirect_to: '/admin/super-dashboard' | '/admin/dashboard'
+  redirect_to: string
   user: AuthenticatedPrincipal
 }
 
