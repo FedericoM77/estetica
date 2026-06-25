@@ -12,11 +12,14 @@ import { TratamientosPage } from './pages/admin/TratamientosPage'
 import { SucursalesPage } from './pages/admin/SucursalesPage'
 import { ThemeToggle } from './components/ui/ThemeToggle'
 
+const LEGACY_THEME_KEY = ['aurum', 'theme'].join('-')
+
 export default function App() {
   useEffect(() => {
     document.documentElement.classList.toggle(
       'dark',
-      localStorage.getItem('aurum-theme') === 'dark',
+      localStorage.getItem('glowdesk-theme') === 'dark' ||
+        localStorage.getItem(LEGACY_THEME_KEY) === 'dark',
     )
   }, [])
 

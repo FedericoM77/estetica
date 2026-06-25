@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -16,9 +15,9 @@
   --color-success: #4caf7d;
   --color-error: #e05a5a;
 
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: Calibri, Arial, sans-serif;
+  --font-sans: Calibri, Arial, sans-serif;
+  --font-body: Calibri, Arial, sans-serif;
 
   --radius-card: 12px;
   --radius-btn: 8px;
